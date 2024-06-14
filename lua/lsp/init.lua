@@ -5,10 +5,9 @@ local lspconfig = vim.lsp.config
 
 if lspconfig then
 	-- Python
-	lspconfig("pyright", {
-		capabilities = capabilities,
-		filetypes = { "python" },
-	})
+	lspconfig.pyright.setup({
+    autostart = false,
+  })
 
 	-- LUA
 	lspconfig("lua_ls", {
