@@ -11,7 +11,7 @@ return {
 
 		-- Set proper Java executable
 		java_cmd = "java"
-		mason_registry = os.getenv("MASON") .. "/share"
+		mason_registry = require("mason-registry")
 
 		-- vim.fn.glob Is needed to set paths using wildcard (*)
 		bundles = {
@@ -30,8 +30,8 @@ return {
 				"-Declipse.product=org.eclipse.jdt.ls.core.product",
 				"-Dlog.protocol=true",
 				"-Dlog.level=ALL",
-				"-Xms512m",
-				"-Xmx2048m",
+				"-Xms1024m",
+				"-Xmx4096m",
 				"--add-modules=ALL-SYSTEM",
 				"--add-opens",
 				"java.base/java.util=ALL-UNNAMED",
