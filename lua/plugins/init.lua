@@ -83,9 +83,11 @@ local plugins = {
 	---- LSP/DAP
 	require("plugins.configs.mason"),
 	"neovim/nvim-lspconfig",
-    require("lsp.configs.dap"),
+  require("lsp.configs.dap"),
 	require("lsp.configs.java"),
-	-- require("lsp.configs.python"),
+	require("lsp.configs.rust"),
+	require("lsp.configs.python"),
+  require("lsp.configs.yaml"),
 
 	---- Completion
 	-- require("plugins.configs.coq"),
