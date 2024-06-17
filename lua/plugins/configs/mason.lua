@@ -26,7 +26,6 @@ return {
           "jsonls",
           "kotlin_language_server",
           "matlab_ls",
-          "nginx_language_server",
           "pyright",
 					"lemminx",
 					"html",
