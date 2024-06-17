@@ -1,9 +1,8 @@
 local capabilities = require("lsp.handlers").capabilities
 
--- local _lspconfig, lspconfig = pcall(require, "lspconfig")
-local lspconfig = vim.lsp.config
+local _lspconfig, lspconfig = pcall(require, "lspconfig")
+if _lspconfig then
 
-if lspconfig then
 	-- Python
 	lspconfig.pyright.setup({
     autostart = false,
@@ -115,11 +114,6 @@ if lspconfig then
 		capabilities = capabilities,
 	})
 
-	-- YAMLs
-	lspconfig("yamlls", {
-		capabilities = capabilities,
-	})
-
 	-- CMake Language Server
 	lspconfig("cmake", {
 		capabilities = capabilities,
@@ -150,11 +144,6 @@ if lspconfig then
 		capabilities = capabilities,
 	})
 
-	-- Kotlin LS
-	lspconfig("kotlin_language_server", {
-		capabilities = capabilities,
-	})
-
 	-- Make Language Server
 	lspconfig("autotools_ls", {
 		capabilities = capabilities,
@@ -174,4 +163,14 @@ if lspconfig then
 	lspconfig("terraformls", {
 		capabilities = capabilities,
 	})
+	-- YAMLs
+  lspconfig.yamlls.setup({
+  	autostart = false,
+  })
+
+  -- Kotlin LS
+  lspconfig.kotlin_language_server.setup({
+    autostart = false,
+  })
+
 end
