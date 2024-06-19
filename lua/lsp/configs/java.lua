@@ -40,7 +40,7 @@ return {
 				"-jar",
 				vim.fn.glob(jdtls_path .. "/plugins/org.eclipse.equinox.launcher_*.jar"),
 				"-configuration",
-				jdtls_path .. "/config",
+				jdtls_path .. "/config_mac_arm",
 				"-data",
 				workspace_dir,
 			},
