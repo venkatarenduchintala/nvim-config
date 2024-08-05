@@ -87,25 +87,24 @@ wk.add({
 
 	-- Buffers
 	---- Without bufferline
-	-- { "<a-right>", "<cmd>bn<cr>", desc = "[BUFFER] Go previous buffer" },
-	-- { "<a-left>", "<cmd>bp<cr>", desc = "[BUFFER] Go next buffer" },
-	---- With bufferline
-	{ "<a-left>", "<cmd>BufferLineCyclePrev<cr>", desc = "[BUFFER] Go previous buffer" },
-	{ "<a-right>", "<cmd>BufferLineCycleNext<cr>", desc = "[BUFFER] Go next buffer" },
-	{ "<a-b>", "<cmd>e #<cr>", desc = "[BUFFER] Switch to other buffer" },
-	{ "<a-t>", "<cmd>ene<cr>", desc = "[BUFFER] Open a new empty buffer" },
-	{ "Z", "<cmd>wall<cr>", desc = "[BUFFER] Save all" },
-	{ "Q", "<cmd>qall!<cr>", desc = "[BUFFER] Quit all without saving" },
-	---- Using famiu/bufdelete.nvim plugin commands to prevent messy behaviours with other plugins
-	{ "<a-q>", "<cmd>Bdelete!<cr>", desc = "[BUFFER] Close current buffer" },
-	{ "<a-w>", "<cmd>%bd!|e#|bd#<cr>", desc = "[BUFFER] Close other buffers" },
+	-- ["<a-right>"] = { "<cmd>bn<cr>", "[BUFFER] Go previous buffer" },
+	-- ["<a-left>"] = {d"<cmd>bp<cr>", "[BUFFER] Go next buffer" },
+	-- With bufferline
+	["<a-h>"] = { "<cmd>BufferLineCyclePrev<cr>", "[BUFFER] Go previous buffer" },
+	["<a-l>"] = { "<cmd>BufferLineCycleNext<cr>", "[BUFFER] Go next buffer" },
+	["<a-b>"] = { "<cmd>e #<cr>", "[BUFFER] Switch to other buffer" },
+	["<a-t>"] = { "<cmd>ene<cr>", "[BUFFER] Open a new empty buffer" },
+	["Z"] = { "<cmd>wall<cr>", "[BUFFER] Save all" },
+	["Q"] = { "<cmd>qall!<cr>", "[BUFFER] Quit all without saving" },
+	-- Using famiu/bufdelete.nvim plugin commands to prevent messy behaviours with other plugins
+	["<a-q>"] = { "<cmd>Bdelete!<cr>", "[BUFFER] Close current buffer" },
+	["<a-w>"] = { "<cmd>%bd!|e#|bd#<cr>", "[BUFFER] Close other buffers" },
 	{
 		"<leader>wn",
 		"<cmd>exec &nu==&rnu? 'set relativenumber!' : 'set relativenumber'<cr>",
 		desc = "[VIEW] Toggle relative numbers",
 	},
-
-	-- Folds
+  -- Folds
 	{ "-", "zA", desc = "[FOLDS] Toggle all folds" },
 	{ "<a-s-down>", "zr", desc = "[FOLDS] Increase fold level" },
 	{ "<a-s-up>", "zm", desc = "[FOLDS] Decrease fold level" },
