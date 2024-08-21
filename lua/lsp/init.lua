@@ -6,6 +6,7 @@ if _lspconfig then
 	-- Python
 	lspconfig.pyright.setup({
     autostart = false,
+    capabilities = capabilities,
   })
 
 	-- LUA
@@ -62,9 +63,7 @@ if _lspconfig then
 	})
 
 	-- Clangd (C++)
-	lspconfig("clangd", {
-		capabilities = capabilities,
-	})
+  -- lspconfig.clangd.setup({})
 
 	-- Bash
 	lspconfig("bashls", {
@@ -105,9 +104,7 @@ if _lspconfig then
 		capabilities = capabilities,
 	})
 	-- XML
-	lspconfig("lemminx", {
-		capabilities = capabilities,
-	})
+	-- lspconfig.lemminx.setup({})
 
 	-- VUE
 	lspconfig("vuels", {
@@ -178,10 +175,10 @@ if _lspconfig then
   })
 
   -- Erlang Language Server
-  lspconfig.erlangls.setup({
-    autostart = false,
-    capabilities = capabilities,
-  })
+  -- lspconfig.erlangls.setup({
+  --  autostart = false,
+  --  capabilities = capabilities,
+  -- })
 
   -- Go Language Server
   lspconfig.gopls.setup({
@@ -199,10 +196,10 @@ if _lspconfig then
   lspconfig.groovyls.setup({})
 
   -- Helm Language Server
-  lspconfig.helm_ls.setup({
+  --[[ lspconfig.helm_ls.setup({
     autostart = false,
     capabilities = capabilities,
-  })
+  }) --]]
   
   -- Json Language Server
   lspconfig.jsonls.setup({

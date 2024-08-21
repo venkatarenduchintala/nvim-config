@@ -35,7 +35,7 @@ return {
 				"javascript",
 				"typescript",
 				"vue",
-				"toml",
+        "toml"
 			},
 			refactor = {
 				highlight_definitions = {

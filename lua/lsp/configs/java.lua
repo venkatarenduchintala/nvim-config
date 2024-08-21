@@ -65,18 +65,10 @@ return {
 			on_attach = function(client, bufnr)
 				handlers.on_attach(client, bufnr)
 				if client.name == "jdtls" then
-					require("which-key").add({
+				require("which-key").add({
 						{ "<leader>de", "<cmd>DapContinue<cr>", desc = "[JDLTS] Show debug configurations" },
-						{
-							"<leader>ro",
-							"<cmd>lua require'jdtls'.organize_imports()<cr>",
-							desc = "[JDLTS] Organize imports",
-						},
-						{
-							"<leader>cs",
-							"<cmd>lua require'jdtls'.super_implementation()<cr>",
-							desc = "[JDLTS] Go to super implementation",
-						},
+						{ "<leader>ro", "<cmd>lua require'jdtls'.organize_imports()<cr>", desc = "[JDLTS] Organize imports" },
+						{ "<leader>cs", "<cmd>lua require'jdtls'.super_implementation()<cr>", desc = "[JDLTS] Go to super implementation" },
 					})
 					jdtls = require("jdtls")
 					jdtls.setup_dap({ hotcodereplace = "auto" })
