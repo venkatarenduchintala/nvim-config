@@ -5,8 +5,9 @@ if _lspconfig then
 
 	-- Python
 	lspconfig.pyright.setup({
-    autostart = false,
     capabilities = capabilities,
+    autostart = true,
+    filetypes = {"python"},
   })
 
 	-- LUA
@@ -66,8 +67,8 @@ if _lspconfig then
   -- lspconfig.clangd.setup({})
 
 	-- Bash
-	lspconfig("bashls", {
-		capabilities = capabilities,
+	lspconfig.bashls.setup({
+		autostart = true,
 	})
 
 	-- Javascript/Typescript
