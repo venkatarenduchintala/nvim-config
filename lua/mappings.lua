@@ -230,36 +230,38 @@ wk.add({
 })
 
 -- INSERT MODE MAPPINGS
+local i_opts = {
+	mode = "i",
+	prefix = "",
+	silent = true,
+	noremap = true,
+	nowait = true,
+}
+
 wk.add({
-	mode = { "i" },
-	{ "jk", "<Esc>", desc = "Normal mode switch" },
-	{ "<a-s>", "<Del>", desc = "Handy DEL on insert mode" },
-	{ "<a-c>", '<ESC>"_ciw', desc = "Change word" },
-	{ "<a-s-c>", '<ESC><cmd>lua require("various-textobjs").subword(true)<cr>"_c', desc = "Change subword" },
-	{
-		"<a-z>",
-		'<ESC><cmd>lua require("various-textobjs").anyQuote("inner")<cr>"_c',
-		desc = "Change within any kind of quotes",
-	},
-	{
-		"<a-x>",
-		'<ESC><cmd>lua require("various-textobjs").anyBracket("inner")<cr>"_c',
-		desc = "Change within any kind of bracket (),[],{}",
-	},
-	{ "<a-w>", "<C-o>w", desc = "Move to next word" },
-	{ "<a-b>", "<C-o>b", desc = "Move to previous word" },
-	{ "<a-e>", "<ESC>ea", desc = "Move to end of word" },
-	{ "<a-j>", "<ESC>:m .+1<cr>==gi", desc = "[MOVE] Move block down" },
-	{ "<a-k>", "<ESC>:m .-2<cr>==gi", desc = "[MOVE] Move block up" },
-})
+	["jk"] = { "<Esc>", "Normal mode switch" },
+	["<a-s>"] = { "<Del>", "Handy DEL on insert mode" },
+	["<a-d>"] = { '<C-o>"_diw', "Delete word" },
+	["<a-c>"] = { '<C-o>"_ciw', "Change word" },
+	["<a-w>"] = { "<C-o>w", "Move to next word" },
+	["<a-b>"] = { "<C-o>b", "Move to previous word" },
+	["<a-e>"] = { "<ESC>ea", "Move to end of word" },
+	["<a-j>"] = { "<ESC>:m .+1<cr>==gi", "[MOVE] Move block down" },
+	["<a-k>"] = { "<ESC>:m .-2<cr>==gi", "[MOVE] Move block up" },
+}, i_opts)
 
 -- VISUAL MODE MAPPINGS
+local v_opts = {
+	mode = "v",
+	nowait = true,
+	prefix = "",
+	silent = true,
+	noremap = true,
+}
 wk.add({
-	mode = { "v" },
-	{ "jk", "<Esc>", desc = "Normal mode switch" },
-	{ "<c-s>", "ggOG", desc = "[SELECT] Select all" },
-	{ "v", "^o$", desc = "[SELECT] Select trimmed line" },
-
+	["jk"] = { "<Esc>", "Normal mode switch" },
+	["<c-s>"] = { "ggOG", "[SELECT] Select all" },
+	["v"] = { "^o$", "[SELECT] Select trimmed line" },
 	-- Edit
 	{ "C", '"_C', desc = "Do not copy when changing" },
 	{ "c", '"_c', desc = "Do not copy when changing" },
@@ -277,28 +279,48 @@ wk.add({
 })
 
 -- Select mode mappings
+local s_opts = {
+	mode = "s",
+	prefix = "",
+	silent = true,
+	noremap = true,
+	nowait = true,
+}
 wk.add({
-	mode = { "s" },
-	{ "<a-Bs>", "<C-o>diw", desc = "Delete word" },
-	{ "<a-c>", "<C-o>ciw", desc = "Change word" },
-})
+	["<a-Bs>"] = { "<C-o>diw", "Delete word" },
+	["<a-c>"] = { "<C-o>ciw", "Change word" },
+}, s_opts)
 
 -- Execution mode mappings
+local x_opts = {
+	mode = "x",
+	prefix = "",
+	silent = true,
+	noremap = true,
+	nowait = true,
+}
 wk.add({
-	mode = { "x" },
-	{ "<leader>r", group = "[Code refactor]" },
-	{ "<leader>rl", "<cmdr:Refactor extract_to_file <cr>", desc = "[REFACTOR] Extract to file" },
-	{ "<leader>rv", "<cmd>:Refactor extract_var <cr>", desc = "[REFACTOR] Extract variable" },
-	{ "<leader>rx", "<cmd>:Refactor extract <cr>", desc = "[REFACTOR] Extract function" },
-})
+	["<leader>r"] = {
+		name = "[Code refactor]",
+		v = { "<cmd>:Refactor extract_var <cr>", "[REFACTOR] Extract variable" },
+		x = { "<cmd>:Refactor extract <cr>", "[REFACTOR] Extract function" },
+		l = { "<cmdr:Refactor extract_to_file <cr>", "[REFACTOR] Extract to file" },
+	},
+}, x_opts)
 
 -- Terminal mode mappings
+local t_opts = {
+	mode = "t",
+	prefix = "",
+	silent = true,
+	noremap = true,
+	nowait = true,
+}
 wk.add({
-	mode = { "t" },
-	{ "<c-h>", "<cmd>wincmd h<cr>,", desc = "[TERMINAL] Move left" },
-	{ "<c-j>", "<cmd>wincmd j<cr>,", desc = "[TERMINAL] Move down" },
-	{ "<c-k>", "<cmd>wincmd k<cr>,", desc = "[TERMINAL] Move up" },
-	{ "<c-l>", "<cmd>wincmd l<cr>,", desc = "[TERMINAL] Move right" },
-})
+	["<c-h>"] = { "<cmd>wincmd h<cr>,", "[TERMINAL] Move left" },
+	["<c-j>"] = { "<cmd>wincmd j<cr>,", "[TERMINAL] Move down" },
+	["<c-k>"] = { "<cmd>wincmd k<cr>,", "[TERMINAL] Move up" },
+	["<c-l>"] = { "<cmd>wincmd l<cr>,", "[TERMINAL] Move right" },
+}, t_opts)
 
 wk.setup({})
