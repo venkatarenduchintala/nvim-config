@@ -21,17 +21,23 @@ wk.add({
 })
 
 -- NORMAL MODE MAPPINGS
+local n_opts = {
+	mode = "n",
+	prefix = "",
+	silent = true,
+	noremap = true,
+	nowait = true,
+}
+
 wk.add({
-	{ ",", "@:", desc = "[RUN] Repeat last command" },
-	{ "m", ":InspectTree<cr>", desc = "[TreeSitter] Toggle TreeSitter tree" },
-	-- Edition
-	{ "<c-s>", "ggVG", desc = "[SELECT] Select all" },
-	-- {"d", '"_d',desc= "Do not copy when deleting" },
-	-- {"D", '"_D',desc= "Do not copy when deleting" },
-	-- {"dd", '"_dd',desc= "Do not copy when deleting" },
-	{ "c", '"_c', desc = "Do not copy when changing" },
-	{ "C", '"_C', desc = "Do not copy when changing" },
-	{ "cc", '"_cc', desc = "Do not copy when changing" },
+	["<c-s>"] = { "ggVG", "[SELECT] Select all" },
+	-- Edit
+	-- ["d"] = { '"_d', "Do not copy when deleting" },
+	-- ["D"] = { '"_D', "Do not copy when deleting" },
+	-- ["dd"] = { '"_dd', "Do not copy when deleting" },
+	["c"] = { '"_c', "Do not copy when changing" },
+	["C"] = { '"_C', "Do not copy when changing" },
+	["cc"] = { '"_cc', "Do not copy when changing" },
 
 	{
 		"<a-s-p>",
