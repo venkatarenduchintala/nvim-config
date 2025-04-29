@@ -79,7 +79,7 @@ local plugins = {
 	require("plugins.configs.refactor"),
 	require("plugins.configs.lens"),
 	require("plugins.configs.conform"), -- Formatting tool
-    require("plugins.configs.glance"),
+  require("plugins.configs.glance"),
 
 	---- LSP/DAP
 	require("plugins.configs.mason"),
