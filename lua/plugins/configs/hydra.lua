@@ -1,6 +1,6 @@
 return {
 	-- Custom modes tu run commands with a common prefix
-	"anuvyklack/hydra.nvim",
+	"nvimtools/hydra.nvim",
 	config = function()
 		-- local ok, hydra = pcall(require, "hydra")
 		hydra = require("hydra")
@@ -53,11 +53,11 @@ return {
 		hydra({
 			hint = hint_dap,
 			config = {
-				color = "amaranth",
+				color = "pink",
 				invoke_on_body = true,
 				hint = {
 					position = "bottom",
-					border = "rounded",
+					float_opts = { "rounded" },
 				},
 			},
 			name = "DAP",
