@@ -53,6 +53,7 @@ return {
 		hydra({
 			hint = hint_dap,
 			config = {
+				color = "amaranth",
 				invoke_on_body = true,
 				hint = {
 					position = "bottom",
