@@ -36,6 +36,7 @@ return {
           "kotlin_language_server",
 					"lua_ls",
           "matlab_ls",
+          "perlnavigator",
           "pyright",
 					"rust_analyzer",
 					"tsp_server",
