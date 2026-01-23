@@ -50,6 +50,8 @@ local plugins = {
 	require("plugins.configs.neotree"),
 	require("plugins.configs.lualine"),
 	require("plugins.configs.treesitter"),
+	{ "nvim-treesitter/nvim-treesitter-textobjects", dependencies = "nvim-treesitter/nvim-treesitter" },
+	{ "nvim-treesitter/nvim-treesitter-refactor", dependencies = "nvim-treesitter/nvim-treesitter" },
 	---- Utilities
 	require("plugins.configs.telescope"),
 	"terryma/vim-expand-region", -- Incremental selection expansion

@@ -1,11 +1,11 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
+	lazy = false,
+	priority = 1000,
+	version = "v0.9.3",
 	dependencies = {
 		"hiphish/rainbow-delimiters.nvim",
-		"nvim-treesitter/nvim-treesitter-textobjects",
 		"windwp/nvim-ts-autotag",
-		"nvim-treesitter/nvim-treesitter-refactor",
-		"nvim-treesitter/playground", -- View treesitter information directly in Neovim
 		"andymass/vim-matchup",
 	},
 	build = ":TSUpdate",

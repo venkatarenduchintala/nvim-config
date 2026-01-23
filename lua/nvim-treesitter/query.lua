@@ -1,0 +1,1 @@
+return require("vim.treesitter.query")
