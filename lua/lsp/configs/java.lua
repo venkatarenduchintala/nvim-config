@@ -11,25 +11,16 @@ return {
 
 		-- Set proper Java executable
 		java_cmd = "java"
-		mason_registry = require("mason-registry")
+		mason_registry = os.getenv("MASON") .. "/share"
 
 		-- vim.fn.glob Is needed to set paths using wildcard (*)
 		bundles = {
-			vim.fn.glob(
-				mason_registry.get_package("java-debug-adapter"):get_install_path()
-					.. "/extension/server/com.microsoft.java.debug.plugin-*.jar"
-			),
+			vim.fn.glob(mason_registry .. "/java-debug-adapter/com.microsoft.java.debug.plugin-*.jar"),
 		}
 
-		vim.list_extend(
-			bundles,
-			vim.split(
-				vim.fn.glob(mason_registry.get_package("java-test"):get_install_path() .. "/extension/server/*.jar"),
-				"\n"
-			)
-		)
+		vim.list_extend(bundles, vim.fn.glob(mason_registry .. "/java-test/*.jar", 0, 1))
 
-		jdtls_path = mason_registry.get_package("jdtls"):get_install_path()
+		jdtls_path = mason_registry .. "jdtls"
 
 		config = {
 			cmd = {
@@ -49,7 +40,7 @@ return {
 				"-jar",
 				vim.fn.glob(jdtls_path .. "/plugins/org.eclipse.equinox.launcher_*.jar"),
 				"-configuration",
-				jdtls_path .. "/config_linux",
+				jdtls_path .. "/config",
 				"-data",
 				workspace_dir,
 			},
@@ -58,7 +49,7 @@ return {
 				allow_incremental_sync = true,
 			},
 			--root_dir = require("jdtls.setup").find_root({"build.gradle", "pom.xml", ".git"}),
-            root_dir = jdtls.setup.find_root({ "gradlew", "mvnw", ".metadata", ".git", "pom.xml" }),
+			root_dir = jdtls.setup.find_root({ "gradlew", "mvnw", ".metadata", ".git", "pom.xml" }),
 
 			on_init = function(client)
 				if client.config.settings then
@@ -76,8 +67,16 @@ return {
 				if client.name == "jdtls" then
 					require("which-key").add({
 						{ "<leader>de", "<cmd>DapContinue<cr>", desc = "[JDLTS] Show debug configurations" },
-						{ "<leader>ro", "<cmd>lua require'jdtls'.organize_imports()<cr>", desc = "[JDLTS] Organize imports" },
-						{ "<leader>cs", "<cmd>lua require'jdtls'.super_implementation()<cr>", desc = "[JDLTS] Go to super implementation" },
+						{
+							"<leader>ro",
+							"<cmd>lua require'jdtls'.organize_imports()<cr>",
+							desc = "[JDLTS] Organize imports",
+						},
+						{
+							"<leader>cs",
+							"<cmd>lua require'jdtls'.super_implementation()<cr>",
+							desc = "[JDLTS] Go to super implementation",
+						},
 					})
 					jdtls = require("jdtls")
 					jdtls.setup_dap({ hotcodereplace = "auto" })

@@ -34,10 +34,11 @@ vim.filetype.add({
 	},
 })
 
--- Disable automatic line breaks on comments
+-- Disable automatic line breaks
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = "*",
-	callback = function()
-		vim.opt_local.formatoptions:remove("c")
-	end,
+  pattern = "*",
+  callback = function()
+    vim.opt_local.textwidth = 0
+    vim.opt_local.formatoptions:remove { "t", "c", "a", "r", "o" }
+  end,
 })

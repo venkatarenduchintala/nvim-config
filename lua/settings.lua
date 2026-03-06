@@ -66,6 +66,12 @@ vim.cmd([[filetype plugin indent on]])
 
 utils.set_indent_sizes({ go = 4, python = 4, rust = 4, cpp = 4, c = 4, make = 4, lua = 4, java = 4, json = 4 })
 
+-- Disable automatic line breaks
+vim.opt.textwidth = 0
+vim.opt.wrap = false
+vim.opt.linebreak = false
+vim.opt.formatoptions:remove({ "t", "c", "a", "r", "o" })
+
 -- Space as leader key
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
@@ -78,3 +84,13 @@ end
 
 -- UI theme
 require("theme").set_active_theme("tokyonight")
+
+-- Not apply background color when running inside tmux. My tmux config changes background color whether the pane is active or not, so I want to use that instead of neovim's background color.
+if vim.env.TMUX then
+	vim.schedule(function()
+		local groups = { "Normal", "NormalNC", "EndOfBuffer", "SignColumn" }
+		for _, g in ipairs(groups) do
+			vim.api.nvim_set_hl(0, g, { bg = "none" })
+		end
+	end)
+end

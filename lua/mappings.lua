@@ -22,6 +22,8 @@ wk.add({
 
 -- NORMAL MODE MAPPINGS
 wk.add({
+	{ ",", "@:", desc = "[RUN] Repeat last command" },
+	{ "m", ":InspectTree<cr>", desc = "[TreeSitter] Toggle TreeSitter tree" },
 	-- Edition
 	{ "<c-s>", "ggVG", desc = "[SELECT] Select all" },
 	-- {"d", '"_d',desc= "Do not copy when deleting" },
@@ -31,7 +33,11 @@ wk.add({
 	{ "C", '"_C', desc = "Do not copy when changing" },
 	{ "cc", '"_cc', desc = "Do not copy when changing" },
 
-	{ "<a-s-p>", '<cmd>lua require("various-textobjs").anyBracket("inner")<cr>"_dP', desc = "Replace block content with paste" },
+	{
+		"<a-s-p>",
+		'<cmd>lua require("various-textobjs").anyBracket("inner")<cr>"_dP',
+		desc = "Replace block content with paste",
+	},
 	{ "<a-p>", '"_ddP', desc = "Replace line with paste" },
 	{ "s", '<cmd>lua require("substitute").operator()<cr>', desc = "Replace operator with paste" },
 
@@ -39,13 +45,29 @@ wk.add({
 	{ "<a-k>", ":m .-2<cr>==", desc = "Move line up" },
 
 	{ "<a-d>", '"_diw', desc = "Delete word" },
-    { "<a-s-d>", '<cmd>lua require("various-textobjs").subword(true)<cr>"_d', desc = "Delete subword" },
+	{ "<a-s-d>", '<cmd>lua require("various-textobjs").subword(true)<cr>"_d', desc = "Delete subword" },
 	{ "<a-c>", '"_ciw', desc = "Change word" },
 	{ "<a-s-c>", '<cmd>lua require("various-textobjs").subword(true)<cr>"_c', desc = "Change subword" },
-	{ "<a-z>", '<cmd>lua require("various-textobjs").anyQuote("inner")<cr>"_c', desc = "Change within any kind of quotes" },
-	{ "<a-s-z>", '<cmd>lua require("various-textobjs").anyQuote("inner")<cr>"_d', desc = "Delete within any kind of quotes" },
-	{ "<a-x>", '<cmd>lua require("various-textobjs").anyBracket("inner")<cr>"_c', desc = "Change within any kind of bracket (),[],{}" },
-	{ "<a-s-x>", '<cmd>lua require("various-textobjs").anyBracket("inner")<cr>"_d', desc = "Delete within any kind of bracket (),[],{}" },
+	{
+		"<a-z>",
+		'<cmd>lua require("various-textobjs").anyQuote("inner")<cr>"_c',
+		desc = "Change within any kind of quotes",
+	},
+	{
+		"<a-s-z>",
+		'<cmd>lua require("various-textobjs").anyQuote("inner")<cr>"_d',
+		desc = "Delete within any kind of quotes",
+	},
+	{
+		"<a-x>",
+		'<cmd>lua require("various-textobjs").anyBracket("inner")<cr>"_c',
+		desc = "Change within any kind of bracket (),[],{}",
+	},
+	{
+		"<a-s-x>",
+		'<cmd>lua require("various-textobjs").anyBracket("inner")<cr>"_d',
+		desc = "Delete within any kind of bracket (),[],{}",
+	},
 
 	{ "<a-a>", '<cmd>TSTextobjectSelect @parameter.inner<cr>"_c', desc = "Change function parameter" },
 	{ "<a-s>", '<cmd>TSTextobjectSelect @parameter.outer<cr>"_d', desc = "Delete function parameter" },
@@ -77,7 +99,11 @@ wk.add({
 	---- Using famiu/bufdelete.nvim plugin commands to prevent messy behaviours with other plugins
 	{ "<a-q>", "<cmd>Bdelete!<cr>", desc = "[BUFFER] Close current buffer" },
 	{ "<a-w>", "<cmd>%bd!|e#|bd#<cr>", desc = "[BUFFER] Close other buffers" },
-	{ "<leader>wn", "<cmd>exec &nu==&rnu? 'set relativenumber!' : 'set relativenumber'<cr>", desc = "[VIEW] Toggle relative numbers" },
+	{
+		"<leader>wn",
+		"<cmd>exec &nu==&rnu? 'set relativenumber!' : 'set relativenumber'<cr>",
+		desc = "[VIEW] Toggle relative numbers",
+	},
 
 	-- Folds
 	{ "-", "zA", desc = "[FOLDS] Toggle all folds" },
@@ -85,7 +111,7 @@ wk.add({
 	{ "<a-s-up>", "zm", desc = "[FOLDS] Decrease fold level" },
 	-- { "<a-down>", "zo", desc = "[FOLDS] Open fold" },
 	-- { "<a-up>", "zc", desc = "[FOLDS] Close fold" },
-    --
+	--
 
 	{ "t", '"_', desc = "Set black hole registry" },
 	{ "qj", "@q", desc = "Execute macro saved in 'q' register" },
@@ -120,7 +146,7 @@ wk.add({
 	{ "<leader>vs", "<cmd>AerialToggle<cr>", desc = "[AERIAL] Toggle file structure view" },
 	{ "<leader>vt", "<cmd>ToggleTerm<cr>", desc = "[TOGGLETERM] Open new terminal" },
 	{ "<leader>vu", "<cmd>UndotreeToggle<cr>", desc = "[UNDOTREE]Toggle last undoable changes view" },
-    { "<leader>vb", "<cmd>lua require('harpoon.ui').toggle_quick_menu()<cr>", desc = "[HARPOON] Show quick menu" },
+	{ "<leader>vb", "<cmd>lua require('harpoon.ui').toggle_quick_menu()<cr>", desc = "[HARPOON] Show quick menu" },
 
 	-- Debug
 	{ "<leader>d", group = "Debug" },
@@ -129,8 +155,16 @@ wk.add({
 	{ "<leader>dE", "<cmd>Telescope dap configurations<cr>", desc = "[DAP] Show debug configurations" },
 	{ "<leader>dk", "<cmd>DapTerminate<cr>", desc = "[DAP] Terminate" },
 	{ "<leader>db", "<cmd>DapToggleBreakpoint<cr>", desc = "[DAP] Toggle breakpoint" },
-	{ "<leader>dB", "<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>", desc = "[DAP] Set conditional breakpoint", },
-	{ "<leader>dl", "<cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<cr>", desc = "[DAP] Set log point breakpoint", },
+	{
+		"<leader>dB",
+		"<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>",
+		desc = "[DAP] Set conditional breakpoint",
+	},
+	{
+		"<leader>dl",
+		"<cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<cr>",
+		desc = "[DAP] Set log point breakpoint",
+	},
 	{ "<leader>dc", "<cmd>DapContinue<cr>", desc = "[DAP] Continue" },
 	{ "<leader>dv", "<cmd>DapStepOver<cr>", desc = "[DAP] Step oVer" },
 	{ "<leader>di", "<cmd>DapStepInto<cr>", desc = "[DAP] Step Into" },
@@ -155,12 +189,20 @@ wk.add({
 	{ "<leader>cv", "<cmd>Lspsaga hover_doc<cr>", desc = "[LSP] Hover" },
 	{ "<leader>cc", "<cmd>Telescope lsp_incoming_calls<cr>", desc = "[LSP] Show incoming Calls" },
 	{ "<leader>ch", "<cmd>lua vim.lsp.buf.signature_help()<cr>", desc = "[LSP] Signature Help" },
-	{ "<leader>cx", "<cmd>lua require'telescope.builtin'.treesitter{ symbols = {'method', 'function', 'function_definition', 'function_declaration'}}<cr>", desc = "[TELESCOPE] Get current buffer functions", },
+	{
+		"<leader>cx",
+		"<cmd>lua require'telescope.builtin'.treesitter{ symbols = {'method', 'function', 'function_definition', 'function_declaration'}}<cr>",
+		desc = "[TELESCOPE] Get current buffer functions",
+	},
 
 	-- Refactoring
 	{ "<leader>r", group = "[Code Refactor]" },
 	{ "<leader>re", "<cmd>Lspsaga code_action<cr>", desc = "[LSP] Code actions" },
-	{ "<leader>rf", "<cmd>lua require('conform').format({ async = true, lsp_fallback = true })<cr>", desc = "[CONFORM] Format code", },
+	{
+		"<leader>rf",
+		"<cmd>lua require('conform').format({ async = true, lsp_fallback = true })<cr>",
+		desc = "[CONFORM] Format code",
+	},
 	{ "<leader>rn", "<cmd>Lspsaga rename<cr>", desc = "[LSP] Rename" },
 	{ "<leader>ri", "<cmd>:Refactor inline_var <cr>", desc = "[REFACTOR] Inline variable" },
 	{ "<leader>rI", "<cmd>:Refactor inline_func <cr>", desc = "[REFACTOR] Inline function" },
@@ -180,19 +222,26 @@ wk.add({
 	-- Display modes
 	{ "<leader>z", group = "[Display Modes]" },
 	{ "<leader>zz", "<cmd>ZenMode<cr>", desc = "[MODE] Toggle zen mode" },
-
 })
 
 -- INSERT MODE MAPPINGS
 wk.add({
 	mode = { "i" },
 	{ "jk", "<Esc>", desc = "Normal mode switch" },
-    { "<a-s>", "<Del>", desc = "Handy DEL on insert mode" },
-    { "<a-c>", '<ESC>"_ciw', desc = "Change word" },
-    { "<a-s-c>", '<ESC><cmd>lua require("various-textobjs").subword(true)<cr>"_c', desc = "Change subword" },
-    { "<a-z>", '<ESC><cmd>lua require("various-textobjs").anyQuote("inner")<cr>"_c', desc = "Change within any kind of quotes" },
-    { "<a-x>", '<ESC><cmd>lua require("various-textobjs").anyBracket("inner")<cr>"_c', desc = "Change within any kind of bracket (),[],{}" },
-    { "<a-w>", "<C-o>w", desc = "Move to next word" },
+	{ "<a-s>", "<Del>", desc = "Handy DEL on insert mode" },
+	{ "<a-c>", '<ESC>"_ciw', desc = "Change word" },
+	{ "<a-s-c>", '<ESC><cmd>lua require("various-textobjs").subword(true)<cr>"_c', desc = "Change subword" },
+	{
+		"<a-z>",
+		'<ESC><cmd>lua require("various-textobjs").anyQuote("inner")<cr>"_c',
+		desc = "Change within any kind of quotes",
+	},
+	{
+		"<a-x>",
+		'<ESC><cmd>lua require("various-textobjs").anyBracket("inner")<cr>"_c',
+		desc = "Change within any kind of bracket (),[],{}",
+	},
+	{ "<a-w>", "<C-o>w", desc = "Move to next word" },
 	{ "<a-b>", "<C-o>b", desc = "Move to previous word" },
 	{ "<a-e>", "<ESC>ea", desc = "Move to end of word" },
 	{ "<a-j>", "<ESC>:m .+1<cr>==gi", desc = "[MOVE] Move block down" },
