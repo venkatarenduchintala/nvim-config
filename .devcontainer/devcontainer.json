@@ -1,0 +1,19 @@
+{
+  "name": "nvim-config",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "nvim",
+  "workspaceFolder": "/workspace/nvim-config",
+  "remoteUser": "dev",
+  "overrideCommand": false,
+  "shutdownAction": "stopCompose",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
+      "extensions": [
+        "ms-vscode.remote-containers"
+      ]
+    }
+  }
+}

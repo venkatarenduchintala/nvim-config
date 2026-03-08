@@ -1,0 +1,32 @@
+services:
+  nvim:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+      args:
+        USERNAME: dev
+        USER_UID: ${UID:-1000}
+        USER_GID: ${GID:-1000}
+    command: sleep infinity
+    working_dir: /workspace/nvim-config
+    environment:
+      TZ: Europe/Zurich
+      LANG: en_GB.UTF-8
+      LC_ALL: en_GB.UTF-8
+      LANGUAGE: en_GB:en
+    volumes:
+      - ${HOME}/.config/nvim:/workspace/nvim-config:cached
+      - ${HOME}/.config/nvim:/home/dev/.config/nvim:cached
+      - nvim-data:/home/dev/.local/share/nvim
+      - nvim-state:/home/dev/.local/state/nvim
+      - nvim-cache:/home/dev/.cache/nvim
+    cpus: 2.0
+    mem_limit: 4g
+    memswap_limit: 4g
+    storage_opt:
+      size: 10G
+
+volumes:
+  nvim-data:
+  nvim-state:
+  nvim-cache:
