@@ -30,6 +30,16 @@ local n_opts = {
 }
 
 wk.add({
+  -- Edit
+	{ "<c-s>", "ggVG", desc = "[SELECT] Select all" },
+	-- {"d", '"_d',desc= "Do not copy when deleting" },
+	-- {"D", '"_D',desc= "Do not copy when deleting" },
+	-- {"dd", '"_dd',desc= "Do not copy when deleting" },
+	{ "c", '"_c', desc = "Do not copy when changing" },
+	{ "C", '"_C', desc = "Do not copy when changing" },
+	{ "cc", '"_cc', desc = "Do not copy when changing" },
+
+wk.add({
 	["<c-s>"] = { "ggVG", "[SELECT] Select all" },
 	-- Edit
 	-- ["d"] = { '"_d', "Do not copy when deleting" },
@@ -93,55 +103,54 @@ wk.add({
 
 	-- Buffers
 	---- Without bufferline
-	-- ["<a-right>"] = { "<cmd>bn<cr>", "[BUFFER] Go previous buffer" },
-	-- ["<a-left>"] = {d"<cmd>bp<cr>", "[BUFFER] Go next buffer" },
-	-- With bufferline
-	["<a-h>"] = { "<cmd>BufferLineCyclePrev<cr>", "[BUFFER] Go previous buffer" },
-	["<a-l>"] = { "<cmd>BufferLineCycleNext<cr>", "[BUFFER] Go next buffer" },
-	["<a-b>"] = { "<cmd>e #<cr>", "[BUFFER] Switch to other buffer" },
-	["<a-t>"] = { "<cmd>ene<cr>", "[BUFFER] Open a new empty buffer" },
-	["Z"] = { "<cmd>wall<cr>", "[BUFFER] Save all" },
-	["Q"] = { "<cmd>qall!<cr>", "[BUFFER] Quit all without saving" },
-	-- Using famiu/bufdelete.nvim plugin commands to prevent messy behaviours with other plugins
-	["<a-q>"] = { "<cmd>Bdelete!<cr>", "[BUFFER] Close current buffer" },
-	["<a-w>"] = { "<cmd>%bd!|e#|bd#<cr>", "[BUFFER] Close other buffers" },
-	-- Folds
-	["|"] = { "za", "[FOLDS] Toggle fold" },
-	["-"] = { "zA", "[FOLDS] Toggle all folds" },
-	["<a-s-down>"] = { "zr", "[FOLDS] Increase fold level" },
-	["<a-s-up>"] = { "zm", "[FOLDS] Decrease fold level" },
-	-- ["<a-down>"] = { "zo", "[FOLDS] Open fold" },
-	-- ["<a-up>"] = { "zc", "[FOLDS] Close fold" },
+	-- { "<a-right>", "<cmd>bn<cr>", desc = "[BUFFER] Go previous buffer" },
+	-- { "<a-left>", "<cmd>bp<cr>", desc = "[BUFFER] Go next buffer" },
+	---- With bufferline
+	{ "<a-left>", "<cmd>BufferLineCyclePrev<cr>", desc = "[BUFFER] Go previous buffer" },
+	{ "<a-right>", "<cmd>BufferLineCycleNext<cr>", desc = "[BUFFER] Go next buffer" },
+	{ "<a-b>", "<cmd>e #<cr>", desc = "[BUFFER] Switch to other buffer" },
+	{ "<a-t>", "<cmd>ene<cr>", desc = "[BUFFER] Open a new empty buffer" },
+	{ "Z", "<cmd>wall<cr>", desc = "[BUFFER] Save all" },
+	{ "Q", "<cmd>qall!<cr>", desc = "[BUFFER] Quit all without saving" },
+	---- Using famiu/bufdelete.nvim plugin commands to prevent messy behaviours with other plugins
+	{ "<a-q>", "<cmd>Bdelete!<cr>", desc = "[BUFFER] Close current buffer" },
+	{ "<a-w>", "<cmd>%bd!|e#|bd#<cr>", desc = "[BUFFER] Close other buffers" },
 
-	-- Macros and registers
-	["t"] = { '"_', "Set black hole registry" },
-	["qj"] = { "@q", "Execute macro saved in 'q' register" },
+    -- Folds
+	{ "|", "za", desc = "[FOLDS] Toggle fold" },
+	{ "-", "zA", desc = "[FOLDS] Toggle all folds" },
+	{ "<a-s-down>", "zr", desc = "[FOLDS] Increase fold level" },
+	{ "<a-s-up>", "zm", desc = "[FOLDS] Decrease fold level" },
+	-- { "<a-down>", "zo", desc = "[FOLDS] Open fold" },
+	-- { "<a-up>", "zc", desc = "[FOLDS] Close fold" },
 
-	-- Find
-	[";"] = { "<cmd>noh<cr>", "Clean search highlights" },
-	["<leader>f"] = {
-		name = "[TELESCOPE]",
-		e = { "<cmd>Telescope find_files hidden=true no_ignore=true<cr>", "[TELESCOPE] Find File" },
-		n = { "<cmd>Telescope grep_string<cr>", "[TELESCOPE] Find files using grep in file names" },
-		g = { "<cmd>Telescope live_grep<cr>", "[TELESCOPE] Find File by live grep (search content inside file)" },
-		b = { "<cmd>Telescope buffers<cr>", "[TELESCOPE] Find buffers" },
-		m = { "<cmd>Telescope marks<cr>", "[TELESCOPE] Marks" },
-		h = { "<cmd>Telescope oldfiles<cr>", "[TELESCOPE] Recent files" },
-		d = { "<cmd>Telescope current_buffer_fuzzy_find<cr>", "[TELESCOPE] Current buffer fuzzy find" },
-		t = { "<cmd>TodoTelescope<cr>", "[TELESCOPE] TODO list" },
-		c = { "<cmd>Telescope command_history<cr>", "[TELESCOPE] Search command history" },
-		x = { "<cmd>Telescope neoclip<cr>", "[TELESCOPE] Search in clipboard manager" },
-		p = { "<cmd>Telescope projects<cr>", "[TELESCOPE] Search projects" },
-		s = { "<cmd>Telescope lsp_document_symbols<cr>", "[TELESCOPE LSP] Find symbols" },
-		z = { "<cmd>Telescope zoxide list<cr>", "[TELESCOPE] Zoxide" },
-		f = { "<cmd>Telescope frecency<cr>", "[TELESCOPE] Frecency" },
-		ic = { "<cmd>Telescope git_commits<cr>", "[TELESCOPE] Git commits" },
-		ib = { "<cmd>Telescope git_branches<cr>", "[TELESCOPE] Git branches" },
-		is = { "<cmd>Telescope git_status<cr>", "[TELESCOPE] Git status" },
-		ih = { "<cmd>Telescope git_stash<cr>", "[TELESCOPE] Git stash" },
-	},
+    -- Macros and registers
+	{ "t", '"_', desc = "Set black hole registry" },
+	{ "qj", "@q", desc = "Execute macro saved in 'q' register" },
 
-	-- Views
+  -- Find
+	{ ";", "<cmd>noh<cr>", desc = "Clean search highlights" },
+	{ "<leader>f", group = "Find" },
+	{ "<leader>fe", "<cmd>Telescope find_files hidden=true no_ignore=true<cr>", desc = "[TELESCOPE] Find File" },
+	{ "<leader>fn", "<cmd>Telescope grep_string<cr>", desc = "[TELESCOPE] Find files using grep in file names" },
+	{ "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "[TELESCOPE] Find File by live grep (search content)" },
+	{ "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "[TELESCOPE] Find buffers" },
+	{ "<leader>fm", "<cmd>Telescope marks<cr>", desc = "[TELESCOPE] Marks" },
+	{ "<leader>fh", "<cmd>Telescope oldfiles<cr>", desc = "[TELESCOPE] Recent files" },
+	{ "<leader>fd", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "[TELESCOPE] Current buffer fuzzy find" },
+	{ "<leader>ft", "<cmd>TodoTelescope<cr>", desc = "[TELESCOPE] TODO list" },
+	{ "<leader>fc", "<cmd>Telescope command_history<cr>", desc = "[TELESCOPE] Search command history" },
+	{ "<leader>fx", "<cmd>Telescope neoclip<cr>", desc = "[TELESCOPE] Search in clipboard manager" },
+	{ "<leader>fp", "<cmd>Telescope projects<cr>", desc = "[TELESCOPE] Search projects" },
+	{ "<leader>fs", "<cmd>Telescope lsp_document_symbols<cr>", desc = "[TELESCOPE LSP] Find symbols" },
+	{ "<leader>fz", "<cmd>Telescope zoxide list<cr>", desc = "[TELESCOPE] Zoxide" },
+	{ "<leader>ff", "<cmd>Telescope frecency<cr>", desc = "[TELESCOPE] Frecency" },
+	{ "<leader>fic", "<cmd>Telescope git_commits<cr>", desc = "[TELESCOPE] Git commits" },
+	{ "<leader>fib", "<cmd>Telescope git_branches<cr>", desc = "[TELESCOPE] Git branches" },
+	{ "<leader>fis", "<cmd>Telescope git_status<cr>", desc = "[TELESCOPE] Git status" },
+	{ "<leader>fih", "<cmd>Telescope git_stash<cr>", desc = "[TELESCOPE] Git stash" },
+
+    -- Views
 	{ "<leader>v", group = "Views" },
 	{ "<leader>vf", "<cmd>Neotree toggle<cr>", desc = "[NEOTREE] Toggle file tree view" },
 	{ "<leader>vp", "<cmd>Trouble diagnostics<cr>", desc = "[TROUBLE] Toggle problem and diagnostics view" },
@@ -221,10 +230,15 @@ wk.add({
 	{ "<leader>gp", "<cmd>Gitsigns prev_hunk<cr>", desc = "[GIT] Prev hunk" },
 	{ "<leader>gh", "<cmd>Gitsigns preview_hunk<cr>", desc = "[GIT] Preview hunk" },
 
-	-- Display modes
-	{ "<leader>z", group = "[Display Modes]" },
-	{ "<leader>zz", "<cmd>ZenMode<cr>", desc = "[MODE] Toggle zen mode" },
-})
+    -- Display modes
+	{ "<leader>m", group = "[Display Modes]" },
+	{ "<leader>mz", "<cmd>ZenMode<cr>", desc = "[MODE] Toggle zen mode" },
+
+    -- Jumps/Marks
+	{ "<leader>j", group = "[Jumps]" },
+	{ "<leader>jk", "<cmd>lua require('harpoon.ui').toggle_quick_menu()<cr>", desc = "[HARPOON] Show quick menu" },
+	{ "<leader>ja", "<cmd>lua require('harpoon.mark').add_file()<cr>", desc = "[HARPOON] Add file" },
+}, n_opts)
 
 -- INSERT MODE MAPPINGS
 local i_opts = {
@@ -234,17 +248,17 @@ local i_opts = {
 	noremap = true,
 	nowait = true,
 }
-
 wk.add({
-	["jk"] = { "<Esc>", "Normal mode switch" },
-	["<a-s>"] = { "<Del>", "Handy DEL on insert mode" },
-	["<a-d>"] = { '<C-o>"_diw', "Delete word" },
-	["<a-c>"] = { '<C-o>"_ciw', "Change word" },
-	["<a-w>"] = { "<C-o>w", "Move to next word" },
-	["<a-b>"] = { "<C-o>b", "Move to previous word" },
-	["<a-e>"] = { "<ESC>ea", "Move to end of word" },
-	["<a-j>"] = { "<ESC>:m .+1<cr>==gi", "[MOVE] Move block down" },
-	["<a-k>"] = { "<ESC>:m .-2<cr>==gi", "[MOVE] Move block up" },
+	mode = { "i" },
+	{ "jk", "<Esc>", desc = "Normal mode switch" },
+	{ "<a-b>", "<C-o>b", desc = "Move to previous word" },
+	{ "<a-c>", '<C-o>"_ciw', desc = "Change word" },
+	{ "<a-d>", '<C-o>"_diw', desc = "Delete word" },
+	{ "<a-e>", "<ESC>ea", desc = "Move to end of word" },
+	{ "<a-j>", "<ESC>:m .+1<cr>==gi", desc = "[MOVE] Move block down" },
+	{ "<a-k>", "<ESC>:m .-2<cr>==gi", desc = "[MOVE] Move block up" },
+	{ "<a-s>", "<Del>", desc = "Handy DEL on insert mode" },
+	{ "<a-w>", "<C-o>w", desc = "Move to next word" },
 }, i_opts)
 
 -- VISUAL MODE MAPPINGS
@@ -270,10 +284,10 @@ wk.add({
 	-- Motions
 	{ "<a-down>", "<cmd>TSTextobjectGotoNextStart @function.outer<cr>", desc = "[MOTION] Move to next method" },
 	{ "<a-up>", "<cmd>TSTextobjectGotoPreviousStart @function.outer<cr>", desc = "[MOTION] Move to previous method" },
-	{ "<", "<gv", desc = "[Indent] Indent left" },
-	{ ">", ">gv", desc = "[Indent] Indent right" },
-	{ "<leader>dx", "<cmd>lua require('dapui').eval()<CR>", desc = "[DAPUI] Evaluate (selection in visual mode) }" },
-})
+    { "<", "<gv", desc = "[Indent] Indent left" },
+    { ">", ">gv", desc = "[Indent] Indent right" },
+    { "<leader>dx", "<cmd>lua require('dapui').eval()<CR>", desc = "[DAPUI] Evaluate (selection in visual mode) }" },
+}, v_opts)
 
 -- Select mode mappings
 local s_opts = {
@@ -284,8 +298,9 @@ local s_opts = {
 	nowait = true,
 }
 wk.add({
-	["<a-Bs>"] = { "<C-o>diw", "Delete word" },
-	["<a-c>"] = { "<C-o>ciw", "Change word" },
+	mode = { "s" },
+    { "<a-Bs>", "<C-o>diw", desc = "Delete word" },
+    { "<a-c>", "<C-o>ciw", desc = "Change word" },
 }, s_opts)
 
 -- Execution mode mappings
@@ -297,12 +312,8 @@ local x_opts = {
 	nowait = true,
 }
 wk.add({
-	["<leader>r"] = {
-		name = "[Code refactor]",
-		v = { "<cmd>:Refactor extract_var <cr>", "[REFACTOR] Extract variable" },
-		x = { "<cmd>:Refactor extract <cr>", "[REFACTOR] Extract function" },
-		l = { "<cmdr:Refactor extract_to_file <cr>", "[REFACTOR] Extract to file" },
-	},
+    { "<a-Bs>", "<C-o>diw", desc = "Delete word" },
+    { "<a-c>", "<C-o>ciw", desc = "Change word" },
 }, x_opts)
 
 -- Terminal mode mappings
@@ -314,10 +325,11 @@ local t_opts = {
 	nowait = true,
 }
 wk.add({
-	["<c-h>"] = { "<cmd>wincmd h<cr>,", "[TERMINAL] Move left" },
-	["<c-j>"] = { "<cmd>wincmd j<cr>,", "[TERMINAL] Move down" },
-	["<c-k>"] = { "<cmd>wincmd k<cr>,", "[TERMINAL] Move up" },
-	["<c-l>"] = { "<cmd>wincmd l<cr>,", "[TERMINAL] Move right" },
+    mode = { "t" },
+    { "<c-h>", "<cmd>wincmd h<cr>,", desc = "[TERMINAL] Move left" },
+    { "<c-j>", "<cmd>wincmd j<cr>,", desc = "[TERMINAL] Move down" },
+    { "<c-k>", "<cmd>wincmd k<cr>,", desc = "[TERMINAL] Move up" },
+    { "<c-l>", "<cmd>wincmd l<cr>,", desc = "[TERMINAL] Move right" },
 }, t_opts)
 
 wk.setup({})

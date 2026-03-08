@@ -108,59 +108,11 @@ if _lspconfig then
 	-- lspconfig.lemminx.setup({})
 
 	-- VUE
-	lspconfig("vuels", {
+	lspconfig.vuels.setup({
+		autostart = false,
 		capabilities = capabilities,
 	})
 
-	-- CMake Language Server
-	lspconfig("cmake", {
-		capabilities = capabilities,
-	})
-
-	-- Elixir Language Server
-	lspconfig("elixirls", {
-		capabilities = capabilities,
-	})
-
-	-- -- Go Language Server
-	-- lspconfig("gopls",{
-	-- 	capabilities = capabilities,
-	-- })
-
-	-- Gradle Language Server
-	lspconfig("gradle_ls", {
-		capabilities = capabilities,
-	})
-
-	-- -- Groovy Language Server
-	-- lspconfig("groovyls",{
-	-- 	capabilities = capabilities,
-	-- })
-
-	-- Json Language Server
-	lspconfig("jsonls", {
-		capabilities = capabilities,
-	})
-
-	-- Make Language Server
-	lspconfig("autotools_ls", {
-		capabilities = capabilities,
-	})
-
-	-- Powershell Language Server
-	lspconfig("powershell_es", {
-		capabilities = capabilities,
-	})
-
-	-- SQL Language Server
-	lspconfig("sqlls", {
-		capabilities = capabilities,
-	})
-
-	-- Terraform Language Server
-	lspconfig("terraformls", {
-		capabilities = capabilities,
-	})
 	-- YAMLs
   lspconfig.yamlls.setup({
   	autostart = false,
@@ -193,8 +145,11 @@ if _lspconfig then
     capabilities = capabilities,
   })
 
-  -- Groovy Language Server
-  lspconfig.groovyls.setup({})
+	-- -- Groovy Language Server
+	lspconfig.groovyls.setup({
+	 	autostart = false,
+	 	capabilities = capabilities,
+	})
 
   -- Helm Language Server
   --[[ lspconfig.helm_ls.setup({
@@ -208,8 +163,11 @@ if _lspconfig then
     capabilities = capabilities,
   })
 
-  -- Kotlin LS
-  lspconfig.kotlin_language_server.setup({})
+	-- Kotlin LS
+	lspconfig.kotlin_language_server.setup({
+		autostart = false,
+		capabilities = capabilities,
+	})
 
   -- Make Language Server
   lspconfig.autotools_ls.setup({
@@ -229,7 +187,9 @@ if _lspconfig then
     capabilities = capabilities,
   })
 
-  -- Terraform Language Server
-  lspconfig.terraformls.setup({})
+	-- Terraform Language Server
+	lspconfig("terraformls", {
+		capabilities = capabilities,
+	})
 
 end

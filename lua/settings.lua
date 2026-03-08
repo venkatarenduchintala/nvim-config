@@ -59,8 +59,8 @@ for key, value in pairs(options) do
 	vim.opt[key] = value
 end
 
-vim.opt.shortmess:append "IsF"
--- vim.opt.shortmess:append "c"
+-- vim.opt.shortmess:append "IsF"
+vim.opt.shortmess:append("c")
 
 vim.cmd [[set fcs=eob:\ ]]
 vim.cmd([[
@@ -106,14 +106,4 @@ if _notify then
 end
 
 -- UI theme
-require("theme").set_active_theme("tokyonight")
-
--- Not apply background color when running inside tmux. My tmux config changes background color whether the pane is active or not, so I want to use that instead of neovim's background color.
-if vim.env.TMUX then
-	vim.schedule(function()
-		local groups = { "Normal", "NormalNC", "EndOfBuffer", "SignColumn" }
-		for _, g in ipairs(groups) do
-			vim.api.nvim_set_hl(0, g, { bg = "none" })
-		end
-	end)
-end
+require("theme").set_active_theme("gruvbox")
