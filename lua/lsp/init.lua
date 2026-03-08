@@ -11,8 +11,7 @@ if _lspconfig then
   })
 
 	-- LUA
-	lspconfig.lua_ls.setup({
-		autostart = false,
+	lspconfig("lua_ls", {
 		settings = {
 			Lua = {
 				runtime = {
@@ -35,7 +34,7 @@ if _lspconfig then
 		},
 	})
 	-- Rust
-	lspconfig.rust_analyzer.setup({
+	lspconfig("rust_analyzer", {
 		on_attach = function(client, bufnr)
 			require("lsp.handlers").on_attach(client, bufnr)
 			-- vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
@@ -65,20 +64,15 @@ if _lspconfig then
 	})
 
 	-- Clangd (C++)
-	lspconfig.clangd.setup({
-		autostart = false,
-		capabilities = capabilities,
-    })
+  -- lspconfig.clangd.setup({})
 
 	-- Bash
 	lspconfig.bashls.setup({
 		autostart = true,
-		capabilities = capabilities,
 	})
 
 	-- Javascript/Typescript
-	lspconfig.eslint.setup({
-		autostart = true,
+	lspconfig("eslint", {
 		capabilities = capabilities,
 		settings = {
 			packageManager = "npm",
@@ -92,33 +86,26 @@ if _lspconfig then
 	})
 
 	-- HTML
-	lspconfig.html.setup({
-		autostart = true,
+	lspconfig("html", {
 		capabilities = capabilities,
 	})
 
 	-- CSS
-	lspconfig.cssls.setup({
-		autostart = true,
+	lspconfig("cssls", {
 		capabilities = capabilities,
 	})
 
 	-- Dockerfile
-	lspconfig.dockerls.setup({
-		autostart = true,
+	lspconfig("dockerls", {
 		capabilities = capabilities,
 	})
 
 	-- Docker compose
-	lspconfig.docker_compose_language_service.setup({
-		autostart = true,
+	lspconfig("docker_compose_language_service", {
 		capabilities = capabilities,
 	})
 	-- XML
-	lspconfig.lemminx.setup({
-		autostart = true,
-		capabilities = capabilities,
-	})
+	-- lspconfig.lemminx.setup({})
 
 	-- VUE
 	lspconfig.vuels.setup({
@@ -201,8 +188,7 @@ if _lspconfig then
   })
 
 	-- Terraform Language Server
-	lspconfig.terraformls.setup({
-		autostart = false,
+	lspconfig("terraformls", {
 		capabilities = capabilities,
 	})
 

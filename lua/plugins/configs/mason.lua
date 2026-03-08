@@ -1,6 +1,6 @@
 return {
 	{
-		"williamboman/mason.nvim",
+		"mason-org/mason.nvim",
 		config = function()
 			require("mason").setup({
         ui = {
@@ -14,9 +14,10 @@ return {
 		end,
 	},
 	{
-		"williamboman/mason-lspconfig.nvim",
+		"mason-org/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup({
+				automatic_enable = false,
 				ensure_installed = {
           "ansiblels",
           "awk_ls",
@@ -42,7 +43,6 @@ return {
 					"tsp_server",
 					"yamlls",
 				},
-				automatic_installation = true,
 			})
 		end,
 	},
@@ -99,7 +99,7 @@ return {
 	{
 		"williamboman/mason-nvim-dap.nvim",
 		dependencies = {
-			"williamboman/mason.nvim",
+			"mason-org/mason.nvim",
 			"mfussenegger/nvim-dap",
 			"jay-babu/mason-nvim-dap.nvim",
 		},

@@ -62,10 +62,38 @@ end
 -- vim.opt.shortmess:append "IsF"
 vim.opt.shortmess:append("c")
 
-vim.cmd([[set fcs=eob:\ ]])
-vim.cmd([[filetype plugin indent on]])
+vim.cmd [[set fcs=eob:\ ]]
+vim.cmd([[
+    filetype plugin indent on
+    syntax on
+]])
 
-utils.set_indent_sizes({ go = 4, python = 4, rust = 4, cpp = 4, c = 4, make = 4, lua = 4, java = 4, json = 4 })
+utils.set_indent_sizes {
+  ["c"] = 4,
+  ["cpp"] = 4,
+  ["css"] = 2,
+  ["go"] = 4,
+  ["html"] = 2,
+  ["java"] = 4,
+  ["javascript"] = 2,
+  ["json"] = 2,
+  ["lua"] = 2,
+  ["make"] = 4,
+  ["markdown"] = 2,
+  ["python"] = 4,
+  ["rust"] = 4,
+  ["sh"] = 2,
+  ["typescript"] = 2,
+  ["xml"] = 4,
+  ["yaml"] = 2,
+  ["*"] = 2,
+}
+
+-- Disable automatic line breaks
+vim.opt.textwidth = 0
+vim.opt.wrap = false
+vim.opt.linebreak = false
+vim.opt.formatoptions:remove({ "t", "c", "a", "r", "o" })
 
 -- Space as leader key
 vim.g.mapleader = " "

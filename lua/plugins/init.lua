@@ -34,6 +34,7 @@ local plugins = {
 	---- UI
 	theme.get_active_theme(),
 	"mhinz/vim-startify", -- Start page
+	"aktersnurra/no-clown-fiesta.nvim", -- Colorful winbar
 	"kyazdani42/nvim-web-devicons",
 	"onsails/lspkind.nvim", -- VSCode like item type icons
 	require("plugins.configs.bufferline"),
@@ -66,10 +67,10 @@ local plugins = {
 	"chrisgrieser/nvim-spider",
   require("plugins.configs.matchup"),
 	require("plugins.configs.textobjs"),
+    require("plugins.configs.substitute"), -- Replate with paste
 	require("plugins.configs.comment"),
 	require("plugins.configs.flash"),
 	require("plugins.configs.todo"),
-	require("plugins.configs.harpoon"),
 	require("plugins.configs.bigfile"),
 	require("plugins.configs.splitjoin"), -- Quick split or join of lists
   "mg979/vim-visual-multi",
@@ -90,12 +91,10 @@ local plugins = {
 	require("lsp.configs.python"),
   require("lsp.configs.yaml"),
 
-	---- Snippets
-	"L3MON4D3/LuaSnip",
-	"rafamadriz/friendly-snippets",
 	---- Completion
 	-- require("plugins.configs.coq"),
 	require("plugins.configs.cmp"),
+	-- require("plugins.configs.blink"),
 	require("plugins.configs.lspsignature"),
 
 --  require("plugins.configs.copilot"),

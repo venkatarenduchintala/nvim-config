@@ -146,7 +146,7 @@ return {
 	{
 		"saecki/crates.nvim",
 		enabled = true,
-		event = { "BufRead Cargo.toml" },
+    event = { "BufRead Cargo.toml" },
 		tag = "v0.4.0",
 		lazy = true,
 		dependencies = { "nvim-lua/plenary.nvim" },
