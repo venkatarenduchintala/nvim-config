@@ -17,21 +17,22 @@ wk.add({
 	{ "B", "<cmd>lua require('spider').motion('b')<cr>", desc = "[MOTION] Spider-b motion" },
 	{ "E", "<cmd>lua require('spider').motion('e')<cr>", desc = "[MOTION] Spider-e motion" },
 	{ "W", "<cmd>lua require('spider').motion('w')<cr>", desc = "[MOTION] Spider-w motion" },
-	{ "<c-s>", "ggOG", desc = "[SELECT] Select all" },
+	{ "<c-a>", "ggOG", desc = "[SELECT] Select all" },
 })
 
 -- NORMAL MODE MAPPINGS
 local n_opts = {
-	mode = "n",
-	prefix = "",
-	silent = true,
-	noremap = true,
-	nowait = true,
+  mode = "n",
+  prefix = "",
+  silent = true,
+  noremap = true,
+  nowait = true,
 }
-
 wk.add({
-  -- Edit
-	{ "<c-s>", "ggVG", desc = "[SELECT] Select all" },
+	{ ",", "@:", desc = "[RUN] Repeat last command" },
+	{ "m", ":InspectTree<cr>", desc = "[TreeSitter] Toggle TreeSitter tree" },
+	-- Edit
+	{ "<c-a>", "ggVG", desc = "[SELECT] Select all" },
 	-- {"d", '"_d',desc= "Do not copy when deleting" },
 	-- {"D", '"_D',desc= "Do not copy when deleting" },
 	-- {"dd", '"_dd',desc= "Do not copy when deleting" },
@@ -104,9 +105,13 @@ wk.add({
 	---- Using famiu/bufdelete.nvim plugin commands to prevent messy behaviours with other plugins
 	{ "<a-q>", "<cmd>Bdelete!<cr>", desc = "[BUFFER] Close current buffer" },
 	{ "<a-w>", "<cmd>%bd!|e#|bd#<cr>", desc = "[BUFFER] Close other buffers" },
+  {
+		"<leader>wn",
+		"<cmd>exec &nu==&rnu? 'set relativenumber!' : 'set relativenumber'<cr>",
+		desc = "[VIEW] Toggle relative numbers",
+	},
 
     -- Folds
-	{ "|", "za", desc = "[FOLDS] Toggle fold" },
 	{ "-", "zA", desc = "[FOLDS] Toggle all folds" },
 	{ "<a-s-down>", "zr", desc = "[FOLDS] Increase fold level" },
 	{ "<a-s-up>", "zm", desc = "[FOLDS] Decrease fold level" },
@@ -134,6 +139,7 @@ wk.add({
 	{ "<leader>fs", "<cmd>Telescope lsp_document_symbols<cr>", desc = "[TELESCOPE LSP] Find symbols" },
 	{ "<leader>fz", "<cmd>Telescope zoxide list<cr>", desc = "[TELESCOPE] Zoxide" },
 	{ "<leader>ff", "<cmd>Telescope frecency<cr>", desc = "[TELESCOPE] Frecency" },
+	{ "<leader>fk", "<cmd>Telescope dap list_breakpoints<cr>", desc = "[TELESCOPE DAP] Show all breakpoints" },
 	{ "<leader>fic", "<cmd>Telescope git_commits<cr>", desc = "[TELESCOPE] Git commits" },
 	{ "<leader>fib", "<cmd>Telescope git_branches<cr>", desc = "[TELESCOPE] Git branches" },
 	{ "<leader>fis", "<cmd>Telescope git_status<cr>", desc = "[TELESCOPE] Git status" },
@@ -161,8 +167,7 @@ wk.add({
 		desc = "[DAP] Set conditional breakpoint",
 	},
 	{
-		"<leader>dl",
-		"<cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<cr>",
+		"<leader>dl",	"<cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<cr>",
 		desc = "[DAP] Set log point breakpoint",
 	},
 	{ "<leader>dc", "<cmd>DapContinue<cr>", desc = "[DAP] Continue" },
@@ -239,15 +244,25 @@ local i_opts = {
 }
 wk.add({
 	mode = { "i" },
-	{ "jk", "<Esc>", desc = "Normal mode switch" },
+	-- { "jk", "<Esc>", desc = "Normal mode switch" },
+	{ "<a-s>", "<Del>", desc = "Handy DEL on insert mode" },
+	{ "<a-c>", '<ESC>"_ciw', desc = "Change word" },
+	{ "<a-s-c>", '<ESC><cmd>lua require("various-textobjs").subword(true)<cr>"_c', desc = "Change subword" },
+	{
+		"<a-z>",
+		'<ESC><cmd>lua require("various-textobjs").anyQuote("inner")<cr>"_c',
+		desc = "Change within any kind of quotes",
+	},
+	{
+		"<a-x>",
+		'<ESC><cmd>lua require("various-textobjs").anyBracket("inner")<cr>"_c',
+		desc = "Change within any kind of bracket (),[],{}",
+	},
+	{ "<a-w>", "<C-o>w", desc = "Move to next word" },
 	{ "<a-b>", "<C-o>b", desc = "Move to previous word" },
-	{ "<a-c>", '<C-o>"_ciw', desc = "Change word" },
-	{ "<a-d>", '<C-o>"_diw', desc = "Delete word" },
 	{ "<a-e>", "<ESC>ea", desc = "Move to end of word" },
 	{ "<a-j>", "<ESC>:m .+1<cr>==gi", desc = "[MOVE] Move block down" },
 	{ "<a-k>", "<ESC>:m .-2<cr>==gi", desc = "[MOVE] Move block up" },
-	{ "<a-s>", "<Del>", desc = "Handy DEL on insert mode" },
-	{ "<a-w>", "<C-o>w", desc = "Move to next word" },
 }, i_opts)
 
 -- VISUAL MODE MAPPINGS
@@ -259,12 +274,11 @@ local v_opts = {
 	noremap = true,
 }
 wk.add({
-	["jk"] = { "<Esc>", "Normal mode switch" },
-	["<c-s>"] = { "ggOG", "[SELECT] Select all" },
-	["v"] = { "^o$", "[SELECT] Select trimmed line" },
+	-- ["jk"] = { "<Esc>", "Normal mode switch" },
+	-- ["<c-a>"] = { "ggOG", "[SELECT] Select all" },
+	-- ["v"] = { "^o$", "[SELECT] Select trimmed line" },
 	-- Edit
 	{ "C", '"_C', desc = "Do not copy when changing" },
-	{ "c", '"_c', desc = "Do not copy when changing" },
 	{ "cc", '"_cc', desc = "Do not copy when changing" },
 	{ "p", '"_dP', desc = "Paste without replacing what is was in clipboard" },
 	{ "<a-j>", ":m '>+1<cr>gv=gv", desc = "[MOVE] Move block down" },
@@ -273,9 +287,9 @@ wk.add({
 	-- Motions
 	{ "<a-down>", "<cmd>TSTextobjectGotoNextStart @function.outer<cr>", desc = "[MOTION] Move to next method" },
 	{ "<a-up>", "<cmd>TSTextobjectGotoPreviousStart @function.outer<cr>", desc = "[MOTION] Move to previous method" },
-    { "<", "<gv", desc = "[Indent] Indent left" },
-    { ">", ">gv", desc = "[Indent] Indent right" },
-    { "<leader>dx", "<cmd>lua require('dapui').eval()<CR>", desc = "[DAPUI] Evaluate (selection in visual mode) }" },
+  { "<", "<gv", desc = "[Indent] Indent left" },
+  { ">", ">gv", desc = "[Indent] Indent right" },
+  { "<leader>dx", "<cmd>lua require('dapui').eval()<CR>", desc = "[DAPUI] Evaluate (selection in visual mode) }" },
 }, v_opts)
 
 -- Select mode mappings
@@ -301,8 +315,10 @@ local x_opts = {
 	nowait = true,
 }
 wk.add({
-    { "<a-Bs>", "<C-o>diw", desc = "Delete word" },
-    { "<a-c>", "<C-o>ciw", desc = "Change word" },
+	{ "<leader>r", group = "[Code refactor]" },
+	{ "<leader>rl", "<cmdr:Refactor extract_to_file <cr>", desc = "[REFACTOR] Extract to file" },
+	{ "<leader>rv", "<cmd>:Refactor extract_var <cr>", desc = "[REFACTOR] Extract variable" },
+	{ "<leader>rx", "<cmd>:Refactor extract <cr>", desc = "[REFACTOR] Extract function" },
 }, x_opts)
 
 -- Terminal mode mappings
@@ -314,11 +330,11 @@ local t_opts = {
 	nowait = true,
 }
 wk.add({
-    mode = { "t" },
-    { "<c-h>", "<cmd>wincmd h<cr>,", desc = "[TERMINAL] Move left" },
-    { "<c-j>", "<cmd>wincmd j<cr>,", desc = "[TERMINAL] Move down" },
-    { "<c-k>", "<cmd>wincmd k<cr>,", desc = "[TERMINAL] Move up" },
-    { "<c-l>", "<cmd>wincmd l<cr>,", desc = "[TERMINAL] Move right" },
+  mode = { "t" },
+  { "<c-h>", "<cmd>wincmd h<cr>,", desc = "[TERMINAL] Move left" },
+  { "<c-j>", "<cmd>wincmd j<cr>,", desc = "[TERMINAL] Move down" },
+  { "<c-k>", "<cmd>wincmd k<cr>,", desc = "[TERMINAL] Move up" },
+  { "<c-l>", "<cmd>wincmd l<cr>,", desc = "[TERMINAL] Move right" },
 }, t_opts)
 
 wk.setup({})
