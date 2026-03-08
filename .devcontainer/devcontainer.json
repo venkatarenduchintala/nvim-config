@@ -6,6 +6,9 @@
   "remoteUser": "dev",
   "overrideCommand": false,
   "shutdownAction": "stopCompose",
+  "features": {
+    "ghcr.io/GeorgOfenbeck/features/lazygit-linuxbinary:1": {}
+  },
   "customizations": {
     "vscode": {
       "settings": {

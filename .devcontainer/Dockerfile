@@ -65,5 +65,3 @@ RUN apt-get update \
 
 USER ${USERNAME}
 WORKDIR /workspace/nvim-config
-
-CMD ["sleep", "infinity"]
