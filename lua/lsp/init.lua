@@ -1,15 +1,12 @@
 local capabilities = require("lsp.handlers").capabilities
 
-local _lspconfig, lspconfig = pcall(require, "lspconfig")
-if _lspconfig then
-
+local lspconfig = vim.lsp.config
+if lspconfig then
 	-- Python
-	lspconfig.pyright.setup({
-    capabilities = capabilities,
-    autostart = true,
-    filetypes = {"python"},
-  })
-
+	lspconfig("pyright", {
+		capabilities = capabilities,
+		filetypes = { "python" },
+	})
 	-- LUA
 	lspconfig("lua_ls", {
 		settings = {
@@ -64,10 +61,13 @@ if _lspconfig then
 	})
 
 	-- Clangd (C++)
-  -- lspconfig.clangd.setup({})
+	lspconfig("clangd", {
+    autostart = true,
+		capabilities = capabilities,
+	})
 
 	-- Bash
-	lspconfig.bashls.setup({
+	lspconfig("bashls", {
 		autostart = true,
 	})
 
@@ -87,6 +87,7 @@ if _lspconfig then
 
 	-- HTML
 	lspconfig("html", {
+    autostart = true,
 		capabilities = capabilities,
 	})
 
@@ -97,98 +98,103 @@ if _lspconfig then
 
 	-- Dockerfile
 	lspconfig("dockerls", {
+    autostart = true,
 		capabilities = capabilities,
 	})
 
 	-- Docker compose
 	lspconfig("docker_compose_language_service", {
+    autostart = true,
 		capabilities = capabilities,
 	})
-	-- XML
-	-- lspconfig.lemminx.setup({})
 
 	-- VUE
-	lspconfig.vuels.setup({
+	lspconfig("vue", {
 		autostart = false,
 		capabilities = capabilities,
 	})
 
 	-- YAMLs
-  lspconfig.yamlls.setup({
+  lspconfig("yamlls", {
+    capabilities = capabilities,
   	autostart = false,
   })
 
   -- CMake Language Server
-  lspconfig.cmake.setup({})
+  lspconfig("cmake", {
+    autostart = false,
+    capabilities = capabilities,
+  })
 
   -- Elixir Language Server
-  lspconfig.elixirls.setup({
+  lspconfig("elixirls", {
     autostart = false,
     capabilities = capabilities,
   })
 
   -- Erlang Language Server
-  -- lspconfig.erlangls.setup({
+  -- lspconfig("erlangls", {
   --  autostart = false,
   --  capabilities = capabilities,
   -- })
 
   -- Go Language Server
-  lspconfig.gopls.setup({
+  lspconfig("gopls", {
     autostart = false,
     capabilities = capabilities,
   })
 
   -- Gradle Language Server
-  lspconfig.gradle_ls.setup({
+  lspconfig("gradle_ls", {
     autostart = false,
     capabilities = capabilities,
   })
 
 	-- -- Groovy Language Server
-	lspconfig.groovyls.setup({
+	lspconfig("groovyls", {
 	 	autostart = false,
 	 	capabilities = capabilities,
 	})
 
   -- Helm Language Server
-  --[[ lspconfig.helm_ls.setup({
+  --[[ lspconfig("helm_ls", {
     autostart = false,
     capabilities = capabilities,
   }) --]]
   
   -- Json Language Server
-  lspconfig.jsonls.setup({
+  lspconfig("jsonls", {
     autostart = false,
     capabilities = capabilities,
   })
 
 	-- Kotlin LS
-	lspconfig.kotlin_language_server.setup({
+	lspconfig("kotlin_language_server", {
 		autostart = false,
 		capabilities = capabilities,
 	})
 
   -- Make Language Server
-  lspconfig.autotools_ls.setup({
+  lspconfig("autotools_ls", {
     autostart = false,
     capabilities = capabilities,
   })
 
   -- Powershell Language Server
-  lspconfig.powershell_es.setup({
+  lspconfig("powershell_es", {
     autostart = false,
     capabilities = capabilities,
   })
 
   -- SQL Language Server
-  lspconfig.sqlls.setup({
+  lspconfig("sqlls", {
     autostart = false,
     capabilities = capabilities,
   })
 
 	-- Terraform Language Server
 	lspconfig("terraformls", {
+    autostart = true,
 		capabilities = capabilities,
 	})
 
