@@ -38,17 +38,6 @@ wk.add({
 	{ "c", '"_c', desc = "Do not copy when changing" },
 	{ "C", '"_C', desc = "Do not copy when changing" },
 	{ "cc", '"_cc', desc = "Do not copy when changing" },
-
-wk.add({
-	["<c-s>"] = { "ggVG", "[SELECT] Select all" },
-	-- Edit
-	-- ["d"] = { '"_d', "Do not copy when deleting" },
-	-- ["D"] = { '"_D', "Do not copy when deleting" },
-	-- ["dd"] = { '"_dd', "Do not copy when deleting" },
-	["c"] = { '"_c', "Do not copy when changing" },
-	["C"] = { '"_C', "Do not copy when changing" },
-	["cc"] = { '"_cc', "Do not copy when changing" },
-
 	{
 		"<a-s-p>",
 		'<cmd>lua require("various-textobjs").anyBracket("inner")<cr>"_dP',
