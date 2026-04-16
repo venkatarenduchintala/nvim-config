@@ -6,7 +6,7 @@ return {
 		require("illuminate").configure({
 			providers = {
 				"lsp",
-				"treesitter",
+				-- nvim-treesitter.locals is unstable here on Neovim 0.12; use regex fallback instead.
 				"regex",
 			},
 			filetypes_denylist = {

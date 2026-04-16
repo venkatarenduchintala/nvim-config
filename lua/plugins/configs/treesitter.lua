@@ -1,12 +1,13 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
+	branch = "master",
+	build = ":TSUpdate",
 	dependencies = {
 		"nvim-treesitter/nvim-treesitter-textobjects",
 		"windwp/nvim-ts-autotag",
 		"nvim-treesitter/nvim-treesitter-refactor",
 		"andymass/vim-matchup",
 	},
-	build = ":TSUpdate",
 	config = function()
 		local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
 
@@ -39,8 +40,8 @@ return {
 			},
 			refactor = {
 				highlight_definitions = {
-					enable = true,
-					-- Set to false if you have an `updatetime` of ~100.
+					-- Broken with current nvim-treesitter locals handling; keep refactor navigation enabled.
+					enable = false,
 					clear_on_cursor_move = true,
 				},
 				highlight_current_scope = { enable = false },
