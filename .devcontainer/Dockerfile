@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG USERNAME=dev
@@ -33,7 +33,7 @@ RUN apt-get update \
         ninja-build \
         nodejs \
         npm \
-        openjdk-17-jdk-headless \
+        openjdk-21-jdk-headless \
         pkg-config \
         procps \
         python3 \

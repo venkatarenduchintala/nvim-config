@@ -43,7 +43,9 @@ M.on_attach = function(client, bufnr)
 	set_hover_border(client)
 end
 
-M.capabilities = require("cmp_nvim_lsp").default_capabilities()
+local ok_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+M.capabilities = ok_cmp and cmp_nvim_lsp.default_capabilities()
+    or vim.lsp.protocol.make_client_capabilities()
 -- M.capabilities = require('coq').lsp_ensure_capabilities()
 -- M.capabilities = require("blink.cmp").get_lsp_capabilities()
 
