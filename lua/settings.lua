@@ -6,7 +6,7 @@ local options = {
     background = "dark",
     backup = false,
     breakindent = true, -- Enable break indent
-    clipboard = "unnamed,unnamedplus", -- Use system clipboard
+    clipboard = "unnamed,unnamedplus",
     cmdheight = 1,
     completeopt = "noinsert,menuone,noselect", -- Set completeopt to have a better completion experience
     confirm = true,
@@ -57,6 +57,20 @@ local options = {
 
 for key, value in pairs(options) do
 	vim.opt[key] = value
+end
+
+if vim.env.TMUX then
+    vim.g.clipboard = {
+        name = "OSC 52",
+        copy = {
+            ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+            ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+        },
+        paste = {
+            ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+            ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+        },
+    }
 end
 
 -- vim.opt.shortmess:append "IsF"
