@@ -60,17 +60,32 @@ for key, value in pairs(options) do
 end
 
 if vim.env.TMUX then
-    vim.g.clipboard = {
-        name = "OSC 52",
-        copy = {
-            ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
-            ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
-        },
-        paste = {
-            ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
-            ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
-        },
-    }
+    if vim.env.WAYLAND_DISPLAY then
+        vim.g.clipboard = {
+            name = "wl-clipboard",
+            copy = {
+                ["+"] = { "wl-copy", "--foreground", "--type", "text/plain" },
+                ["*"] = { "wl-copy", "--foreground", "--primary", "--type", "text/plain" },
+            },
+            paste = {
+                ["+"] = { "wl-paste", "--no-newline" },
+                ["*"] = { "wl-paste", "--no-newline", "--primary" },
+            },
+        }
+    else
+        -- Remote/SSH tmux without Wayland — fall back to OSC 52
+        vim.g.clipboard = {
+            name = "OSC 52",
+            copy = {
+                ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+                ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+            },
+            paste = {
+                ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+                ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+            },
+        }
+    end
 end
 
 -- vim.opt.shortmess:append "IsF"
