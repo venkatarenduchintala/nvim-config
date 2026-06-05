@@ -4,8 +4,8 @@ if vim.fn.has("unix") == 1 and vim.fn.executable("wl-copy") == 1 and vim.env.WAY
 	vim.g.clipboard = {
 		name = "wl-clipboard",
 		copy = {
-			["+"] = { "wl-copy", "--foreground", "--type", "text/plain" },
-			["*"] = { "wl-copy", "--foreground", "--primary", "--type", "text/plain" },
+			["+"] = { "wl-copy", "--type", "text/plain" },
+			["*"] = { "wl-copy", "--primary", "--type", "text/plain" },
 		},
 		paste = {
 			["+"] = { "wl-paste", "--no-newline" },
