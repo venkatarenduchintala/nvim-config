@@ -1,12 +1,27 @@
 local utils = require("utils")
 
+if vim.fn.has("unix") == 1 and vim.fn.executable("wl-copy") == 1 and vim.env.WAYLAND_DISPLAY then
+	vim.g.clipboard = {
+		name = "wl-clipboard",
+		copy = {
+			["+"] = { "wl-copy", "--foreground", "--type", "text/plain" },
+			["*"] = { "wl-copy", "--foreground", "--primary", "--type", "text/plain" },
+		},
+		paste = {
+			["+"] = { "wl-paste", "--no-newline" },
+			["*"] = { "wl-paste", "--no-newline", "--primary" },
+		},
+		cache_enabled = 0,
+	}
+end
+
 local options = {
     autoindent = true,
     autoread = true,
     background = "dark",
     backup = false,
     breakindent = true, -- Enable break indent
-    clipboard = "unnamed,unnamedplus", -- Use system clipboard
+    clipboard = "unnamedplus", -- Use system clipboard
     cmdheight = 1,
     completeopt = "noinsert,menuone,noselect", -- Set completeopt to have a better completion experience
     confirm = true,
