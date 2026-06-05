@@ -1,10 +1,12 @@
 local utils = require("utils")
 
--- Force wl-copy provider; must be set before has('clipboard') is called.
--- Nvim auto-detects wl-copy on Wayland, but the explicit string form pins
--- the provider and skips the detection loop.
 if vim.fn.has("unix") == 1 and vim.fn.executable("wl-copy") == 1 and vim.env.WAYLAND_DISPLAY then
-	vim.g.clipboard = "wl-copy"
+	vim.g.clipboard = {
+		name  = "wl-clipboard",
+		copy  = { ["+"] = {"setsid", "wl-copy", "--type", "text/plain"}, ["*"] = {"setsid", "wl-copy", "--primary", "--type", "text/plain"} },
+		paste = { ["+"] = {"wl-paste", "--no-newline"},         ["*"] = {"wl-paste", "--no-newline", "--primary"} },
+		cache_enabled = 1,
+	}
 end
 
 local options = {
