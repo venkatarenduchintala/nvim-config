@@ -34,6 +34,17 @@ vim.filetype.add({
 	},
 })
 
+-- nvim-treesitter is incompatible with nvim 0.12's captures API for markdown
+-- injections (TSNode[] vs TSNode mismatch in set-lang-from-info-string!),
+-- causing crashes in both the highlighter and vim-matchup. Stop treesitter
+-- for markdown until upstream fixes the predicate handler.
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "markdown",
+	callback = function()
+		vim.treesitter.stop()
+	end,
+})
+
 -- Disable automatic line breaks
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "*",
