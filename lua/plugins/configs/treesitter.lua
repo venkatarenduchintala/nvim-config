@@ -44,6 +44,9 @@ return {
 				"bash",
 				"gotmpl",
 				"jsonnet",
+				-- Markdown
+				"markdown",
+				"markdown_inline",
 			},
 			refactor = {
 				highlight_definitions = {

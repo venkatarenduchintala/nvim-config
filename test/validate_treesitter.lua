@@ -43,8 +43,10 @@ test_parser('yaml',       cfg .. '/test/fixtures/deployment.yaml')
 test_parser('bash',       cfg .. '/test/fixtures/script.sh')
 test_parser('gotmpl',     cfg .. '/test/fixtures/helm_deployment.yaml')
 test_parser('dockerfile', cfg .. '/test/fixtures/Dockerfile')
-test_parser('jsonnet',    cfg .. '/test/fixtures/dashboard.jsonnet')
-test_parser('python',     cfg .. '/test/fixtures/script.py')
+test_parser('jsonnet',          cfg .. '/test/fixtures/dashboard.jsonnet')
+test_parser('python',           cfg .. '/test/fixtures/script.py')
+test_parser('markdown',         cfg .. '/test/fixtures/README.md')
+test_parser('markdown_inline',  cfg .. '/test/fixtures/README.md')
 
 if #errors > 0 then
   for _, err in ipairs(errors) do

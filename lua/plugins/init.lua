@@ -83,6 +83,7 @@ local plugins = {
   require("plugins.configs.glance"),
 
 	---- LSP/DAP
+	require("plugins.configs.lazydev"),
 	require("plugins.configs.mason"),
 	"neovim/nvim-lspconfig",
   require("lsp.configs.dap"),
