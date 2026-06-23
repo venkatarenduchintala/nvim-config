@@ -117,9 +117,6 @@ return {
 				-- enables vim-matchup integration
 				enable = true,
 				enable_quotes = true,
-				-- markdown injections (bash/sh code blocks) trigger a nil-node crash
-				-- in the treesitter injection layer; fall back to regex matching there
-				disable = { "markdown" },
 			},
 			-- incremental_selection = {
 			--     enable = true,
