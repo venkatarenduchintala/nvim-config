@@ -3,7 +3,7 @@ vim.lsp.config('lua_ls', {
     Lua = {
       runtime = { version = "LuaJIT" },
       diagnostics = { globals = { "vim" } },
-      workspace = { library = vim.api.nvim_get_runtime_file("", true) },
+      -- workspace.library is managed by lazydev.nvim
       telemetry = { enable = false },
     },
   },

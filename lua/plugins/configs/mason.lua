@@ -35,6 +35,7 @@ return {
 					"yamlls",
 					-- General dev
 					"lua_ls",
+					"marksman",
 					"pyright",
 					"rust_analyzer",
 					"clangd",
