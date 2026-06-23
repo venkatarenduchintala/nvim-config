@@ -1,7 +1,7 @@
 -- Headless treesitter parser installer for CI.
 -- Uses TSInstall! + vim.wait() polling parser .so files on disk.
 -- Exit code 1 on timeout so the CI step fails visibly.
-local langs = { 'go', 'terraform', 'hcl' }
+local langs = { 'go', 'terraform', 'hcl', 'yaml' }
 local parser_dir = vim.fn.stdpath('data') .. '/lazy/nvim-treesitter/parser/'
 
 local function installed(lang)

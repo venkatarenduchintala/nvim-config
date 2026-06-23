@@ -45,6 +45,14 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
+-- Disable cmp autocompletion for YAML — we want linting/diagnostics only
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "yaml",
+  callback = function()
+    require("cmp").setup.buffer({ enabled = false })
+  end,
+})
+
 -- Disable automatic line breaks
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "*",

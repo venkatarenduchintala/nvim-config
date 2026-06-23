@@ -84,6 +84,18 @@ return {
 				},
 				ignore_install = {},
 			})
+
+			-- Wire up nvim-lint: which linters run per filetype and when
+			local lint = require("lint")
+			lint.linters_by_ft = {
+				yaml = { "yamllint" },
+			}
+			vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
+				pattern = { "*.yaml", "*.yml" },
+				callback = function()
+					lint.try_lint()
+				end,
+			})
 		end,
 	},
 	{
