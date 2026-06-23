@@ -43,6 +43,7 @@ return {
 				"hcl",
 				"bash",
 				"gotmpl",
+				"jsonnet",
 			},
 			refactor = {
 				highlight_definitions = {
