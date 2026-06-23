@@ -114,10 +114,32 @@ if lspconfig then
 		capabilities = capabilities,
 	})
 
-	-- YAMLs
+	-- YAMLs — diagnostics only, no completion
   lspconfig("yamlls", {
+    autostart = true,
     capabilities = capabilities,
-  	autostart = false,
+    settings = {
+      yaml = {
+        validate = true,
+        hover = true,
+        completion = false,
+        schemaStore = {
+          enable = true,
+          url = "https://www.schemastore.org/api/json/catalog.json",
+        },
+        schemas = {
+          -- Kubernetes manifests in common SRE directory layouts
+          kubernetes = {
+            "manifests/**/*.yaml",
+            "k8s/**/*.yaml",
+            "kubernetes/**/*.yaml",
+            "deploy/**/*.yaml",
+            "templates/**/*.yaml",
+            "chart/templates/**/*.yaml",
+          },
+        },
+      },
+    },
   })
 
   -- CMake Language Server
@@ -140,8 +162,18 @@ if lspconfig then
 
   -- Go Language Server
   lspconfig("gopls", {
-    autostart = false,
+    autostart = true,
     capabilities = capabilities,
+    settings = {
+      gopls = {
+        analyses = {
+          unusedparams = true,
+          shadow = true,
+        },
+        staticcheck = true,
+        gofumpt = true,
+      },
+    },
   })
 
   -- Gradle Language Server

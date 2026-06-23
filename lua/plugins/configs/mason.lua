@@ -20,6 +20,8 @@ return {
 				automatic_enable = false,
 				-- skip heavy binary downloads in CI; lazy.nvim plugin code is still validated
 				ensure_installed = vim.env.CI and {} or {
+					"gopls",
+					"terraform-ls",
 					"ansiblels",
 					"awk_ls",
 					"bashls",
@@ -56,6 +58,7 @@ return {
 				automatic_installation = not vim.env.CI,
 				quiet_mode = false,
 				ensure_installed = vim.env.CI and {} or {
+					"tflint",
 					"actionlint",
 					"ansible-lint",
 					"api-linter",
@@ -81,6 +84,18 @@ return {
 				},
 				ignore_install = {},
 			})
+
+			-- Wire up nvim-lint: which linters run per filetype and when
+			local lint = require("lint")
+			lint.linters_by_ft = {
+				yaml = { "yamllint" },
+			}
+			vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
+				pattern = { "*.yaml", "*.yml" },
+				callback = function()
+					lint.try_lint()
+				end,
+			})
 		end,
 	},
 	{
@@ -93,6 +108,7 @@ return {
 		config = function()
 			require("mason-nvim-dap").setup({
 				ensure_installed = vim.env.CI and {} or {
+					"delve",
 					"codelldb",
 					"javatest",
 					"javadbg",

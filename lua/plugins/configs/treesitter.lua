@@ -36,7 +36,11 @@ return {
 				"javascript",
 				"typescript",
 				"vue",
-        "toml"
+				"toml",
+				-- SRE
+				"go",
+				"terraform",
+				"hcl",
 			},
 			refactor = {
 				highlight_definitions = {

@@ -38,36 +38,12 @@ jobs:
       - name: Check Neovim version
         run: docker run --rm nvim-config:ci nvim --version
 
-      - name: Prepare plugin data directory
-        run: |
-          mkdir -p $HOME/.local/share/nvim-ci
-          chmod 777 $HOME/.local/share/nvim-ci
-
-      - name: Cache lazy.nvim plugins
-        uses: actions/cache@v4
-        with:
-          path: ~/.local/share/nvim-ci
-          key: nvim-plugins-${{ hashFiles('lua/plugins/**/*.lua') }}
-          restore-keys: nvim-plugins-
-
-      - name: Install plugins via lazy.nvim
+      - name: Run all Neovim validations
         run: |
           docker run --rm \
+            --network=host \
             -e CI=true \
             -v "${{ github.workspace }}:/home/dev/.config/nvim:ro" \
-            -v "$HOME/.local/share/nvim-ci:/home/dev/.local/share/nvim" \
             nvim-config:ci \
-            nvim --headless \
-              -c "lua require('lazy').sync({wait=true, show=false})" \
-              -c "qall"
-        timeout-minutes: 15
-
-      - name: Validate Neovim loads with all plugins
-        run: |
-          docker run --rm \
-            -e CI=true \
-            -v "${{ github.workspace }}:/home/dev/.config/nvim:ro" \
-            -v "$HOME/.local/share/nvim-ci:/home/dev/.local/share/nvim" \
-            nvim-config:ci \
-            nvim --headless -c "qall"
-        timeout-minutes: 2
+            bash /home/dev/.config/nvim/test/ci_validate.sh
+        timeout-minutes: 30

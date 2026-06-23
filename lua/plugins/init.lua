@@ -86,6 +86,7 @@ local plugins = {
 	require("plugins.configs.mason"),
 	"neovim/nvim-lspconfig",
   require("lsp.configs.dap"),
+	require("lsp.configs.go"),
 	require("lsp.configs.java"),
 	require("lsp.configs.rust"),
 	require("lsp.configs.python"),
