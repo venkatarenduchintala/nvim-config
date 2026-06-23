@@ -15,7 +15,12 @@ nvim --headless \
 echo "=== Validating Neovim startup with all plugins ==="
 nvim --headless -c "qall"
 
-echo "=== Installing treesitter parsers (Go, Terraform, HCL) ==="
+echo "=== Validating LSP config loads without errors ==="
+nvim --headless \
+  -c "luafile /home/dev/.config/nvim/test/ci_validate_lsp.lua" \
+  -c "qall"
+
+echo "=== Installing treesitter parsers ==="
 nvim --headless \
   -c "luafile /home/dev/.config/nvim/test/install_parsers.lua" \
   -c "qall"

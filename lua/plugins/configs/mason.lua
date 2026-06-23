@@ -17,35 +17,32 @@ return {
 		"mason-org/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup({
-				automatic_enable = false,
+				-- Auto-enable all installed servers; jdtls has its own startup lifecycle
+				automatic_enable = {
+					exclude = { "jdtls" },
+				},
 				-- skip heavy binary downloads in CI; lazy.nvim plugin code is still validated
 				ensure_installed = vim.env.CI and {} or {
+					-- SRE
 					"gopls",
-					"terraform-ls",
+					"terraformls",
 					"helm_ls",
 					"ansiblels",
-					"awk_ls",
 					"bashls",
-					"clangd",
-					"docker_compose_language_service",
 					"dockerls",
-					"dotls",
-					"elixirls",
-					"eslint",
-					"gradle_ls",
-					"groovyls",
-					"html",
-					"jdtls",
-					"jqls",
-					"jsonls",
-					"kotlin_language_server",
+					"docker_compose_language_service",
+					"yamlls",
+					-- General dev
 					"lua_ls",
-					"matlab_ls",
-					"perlnavigator",
 					"pyright",
 					"rust_analyzer",
-					"tsp_server",
-					"yamlls",
+					"clangd",
+					"eslint",
+					"html",
+					"cssls",
+					"jsonls",
+					-- Java (enabled separately via lsp/configs/java.lua)
+					"jdtls",
 				},
 			})
 		end,
