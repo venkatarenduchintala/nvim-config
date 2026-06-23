@@ -28,6 +28,7 @@ return {
 					"terraformls",
 					"helm_ls",
 					"ansiblels",
+					"jsonnet_ls",
 					"bashls",
 					"dockerls",
 					"docker_compose_language_service",
@@ -60,6 +61,7 @@ return {
 					"shellcheck",
 					"shfmt",
 					"hadolint",
+					"ruff",
 					"actionlint",
 					"ansible-lint",
 					"api-linter",
@@ -93,9 +95,10 @@ return {
 				sh         = { "shellcheck" },
 				bash       = { "shellcheck" },
 				dockerfile = { "hadolint" },
+				python     = { "ruff" },
 			}
 			vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
-				pattern = { "*.yaml", "*.yml", "*.sh", "Dockerfile", "dockerfile" },
+				pattern = { "*.yaml", "*.yml", "*.sh", "Dockerfile", "dockerfile", "*.py" },
 				callback = function()
 					lint.try_lint()
 				end,

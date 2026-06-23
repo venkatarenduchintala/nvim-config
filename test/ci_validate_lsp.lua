@@ -13,7 +13,7 @@ if not global_cfg or not global_cfg.capabilities then
 end
 
 -- Spot-check that server-specific after/lsp overrides are present
-local servers_with_settings = { "gopls", "lua_ls", "rust_analyzer", "yamlls", "helm_ls", "eslint" }
+local servers_with_settings = { "gopls", "lua_ls", "rust_analyzer", "yamlls", "helm_ls", "eslint", "ansiblels", "jsonnet_ls" }
 for _, name in ipairs(servers_with_settings) do
   local cfg = vim.lsp.config[name]
   if not cfg or not cfg.settings then
