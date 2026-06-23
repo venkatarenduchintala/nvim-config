@@ -116,6 +116,9 @@ local plugins = {
 
   -- Latex based on VimTex
   require("plugins.configs.latex"),
+
+  ---- AI
+  require("plugins.configs.claudecode"),
 }
 
 -- vim.api.nvim_echo({ { 'Active theme: ' .. theme.theme_name, "Normal" } }, true, {});
