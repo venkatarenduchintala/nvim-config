@@ -189,10 +189,33 @@ if lspconfig then
 	})
 
   -- Helm Language Server
-  --[[ lspconfig("helm_ls", {
-    autostart = false,
+  lspconfig("helm_ls", {
+    autostart = true,
     capabilities = capabilities,
-  }) --]]
+    settings = {
+      ['helm-ls'] = {
+        logLevel = "info",
+        valuesFiles = {
+          mainValuesFile = "values.yaml",
+          lintOverlayValuesFile = "values.lint.yaml",
+          additionalValuesFilesGlobPattern = "values*.yaml",
+        },
+        yamlls = {
+          enabled = true,
+          diagnosticsLimit = 50,
+          showDiagnosticsDirectly = false,
+          path = "yaml-language-server",
+          config = {
+            schemas = {
+              kubernetes = "templates/**",
+            },
+            completion = true,
+            hover = true,
+          },
+        },
+      },
+    },
+  })
   
   -- Json Language Server
   lspconfig("jsonls", {
