@@ -140,8 +140,18 @@ if lspconfig then
 
   -- Go Language Server
   lspconfig("gopls", {
-    autostart = false,
+    autostart = true,
     capabilities = capabilities,
+    settings = {
+      gopls = {
+        analyses = {
+          unusedparams = true,
+          shadow = true,
+        },
+        staticcheck = true,
+        gofumpt = true,
+      },
+    },
   })
 
   -- Gradle Language Server

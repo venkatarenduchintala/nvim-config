@@ -71,3 +71,25 @@ jobs:
             nvim-config:ci \
             nvim --headless -c "qall"
         timeout-minutes: 2
+
+      - name: Install treesitter parsers (Go, Terraform, HCL)
+        run: |
+          docker run --rm \
+            -e CI=true \
+            -v "${{ github.workspace }}:/home/dev/.config/nvim:ro" \
+            -v "$HOME/.local/share/nvim-ci:/home/dev/.local/share/nvim" \
+            nvim-config:ci \
+            nvim --headless -c "TSUpdateSync" -c "qall"
+        timeout-minutes: 10
+
+      - name: Test Go and Terraform treesitter parsers
+        run: |
+          docker run --rm \
+            -e CI=true \
+            -v "${{ github.workspace }}:/home/dev/.config/nvim:ro" \
+            -v "$HOME/.local/share/nvim-ci:/home/dev/.local/share/nvim" \
+            nvim-config:ci \
+            nvim --headless \
+              -c "luafile /home/dev/.config/nvim/test/validate_treesitter.lua" \
+              -c "qall"
+        timeout-minutes: 2
