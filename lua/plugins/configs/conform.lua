@@ -24,7 +24,7 @@ return {
 
 		formatters_by_ft = {
 			lua = { "stylua" },
-			sh = { "beautysh" },
+			sh = { "shfmt" },
 			json = { "jq" },
 			html = { "prettierd", "prettier", "tidy", stop_after_first = true },
 			css = { "prettierd", "prettier", "tidy", stop_after_first = true },

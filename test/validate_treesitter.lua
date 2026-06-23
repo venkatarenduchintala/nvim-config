@@ -37,9 +37,12 @@ local function test_parser(lang, filepath)
 end
 
 local cfg = '/home/dev/.config/nvim'
-test_parser('go',        cfg .. '/test/fixtures/hello.go')
-test_parser('terraform', cfg .. '/test/fixtures/main.tf')
-test_parser('yaml',      cfg .. '/test/fixtures/deployment.yaml')
+test_parser('go',         cfg .. '/test/fixtures/hello.go')
+test_parser('terraform',  cfg .. '/test/fixtures/main.tf')
+test_parser('yaml',       cfg .. '/test/fixtures/deployment.yaml')
+test_parser('bash',       cfg .. '/test/fixtures/script.sh')
+test_parser('gotmpl',     cfg .. '/test/fixtures/helm_deployment.yaml')
+test_parser('dockerfile', cfg .. '/test/fixtures/Dockerfile')
 
 if #errors > 0 then
   for _, err in ipairs(errors) do

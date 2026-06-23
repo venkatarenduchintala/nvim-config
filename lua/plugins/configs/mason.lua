@@ -22,6 +22,7 @@ return {
 				ensure_installed = vim.env.CI and {} or {
 					"gopls",
 					"terraform-ls",
+					"helm_ls",
 					"ansiblels",
 					"awk_ls",
 					"bashls",
@@ -59,6 +60,9 @@ return {
 				quiet_mode = false,
 				ensure_installed = vim.env.CI and {} or {
 					"tflint",
+					"shellcheck",
+					"shfmt",
+					"hadolint",
 					"actionlint",
 					"ansible-lint",
 					"api-linter",
@@ -88,10 +92,13 @@ return {
 			-- Wire up nvim-lint: which linters run per filetype and when
 			local lint = require("lint")
 			lint.linters_by_ft = {
-				yaml = { "yamllint" },
+				yaml       = { "yamllint" },
+				sh         = { "shellcheck" },
+				bash       = { "shellcheck" },
+				dockerfile = { "hadolint" },
 			}
 			vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
-				pattern = { "*.yaml", "*.yml" },
+				pattern = { "*.yaml", "*.yml", "*.sh", "Dockerfile", "dockerfile" },
 				callback = function()
 					lint.try_lint()
 				end,

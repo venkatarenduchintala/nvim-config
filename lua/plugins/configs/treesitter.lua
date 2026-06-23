@@ -41,6 +41,8 @@ return {
 				"go",
 				"terraform",
 				"hcl",
+				"bash",
+				"gotmpl",
 			},
 			refactor = {
 				highlight_definitions = {
