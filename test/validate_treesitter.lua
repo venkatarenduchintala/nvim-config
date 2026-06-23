@@ -13,7 +13,7 @@ local function test_parser(lang, filepath)
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
 
   local ok, result = pcall(vim.treesitter.get_parser, buf, lang)
-  if not ok then
+  if not ok or result == nil then
     table.insert(errors, string.format('[%s] parser load failed: %s', lang, tostring(result)))
     vim.api.nvim_buf_delete(buf, { force = true })
     return

@@ -79,7 +79,9 @@ jobs:
             -v "${{ github.workspace }}:/home/dev/.config/nvim:ro" \
             -v "$HOME/.local/share/nvim-ci:/home/dev/.local/share/nvim" \
             nvim-config:ci \
-            nvim --headless -c "TSUpdateSync" -c "qall"
+            nvim --headless \
+              -c "luafile /home/dev/.config/nvim/test/install_parsers.lua" \
+              -c "qall"
         timeout-minutes: 10
 
       - name: Test Go and Terraform treesitter parsers
