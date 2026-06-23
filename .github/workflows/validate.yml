@@ -1,0 +1,46 @@
+name: Validate Neovim Config
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: [master]
+
+jobs:
+  validate:
+    name: Build & validate Neovim
+    runs-on: ubuntu-latest
+    # Skip docs: and chore: commits on push; always run on pull requests
+    if: |
+      github.event_name == 'pull_request' ||
+      (
+        !startsWith(github.event.head_commit.message, 'docs:') &&
+        !startsWith(github.event.head_commit.message, 'chore:')
+      )
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build devcontainer image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: .devcontainer/Dockerfile
+          tags: nvim-config:ci
+          load: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Check Neovim version
+        run: docker run --rm nvim-config:ci nvim --version
+
+      - name: Validate Neovim starts headless
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/home/dev/.config/nvim:ro" \
+            nvim-config:ci \
+            nvim --headless --noplugin +qall
