@@ -34,7 +34,9 @@ end
 local function set_hover_border(client)
 	local hp = client.server_capabilities.hoverProvider
 	if hp == true or (type(hp) == "table" and next(hp) ~= nil) then
-		vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border })
+		vim.lsp.handlers["textDocument/hover"] = function(err, result, ctx, config)
+			return vim.lsp.handlers.hover(err, result, ctx, vim.tbl_extend("force", config or {}, { border = border }))
+		end
 	end
 end
 
