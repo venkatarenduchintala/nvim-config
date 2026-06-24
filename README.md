@@ -242,6 +242,6 @@ See [`test/README.md`](test/README.md) for the full test suite documentation —
 - **[nvim-colorizer](https://github.com/norcalli/nvim-colorizer.lua)** — inline color preview for hex codes and CSS colors
 - **[undotree](https://github.com/mbbill/undotree)** — visual undo history tree
 - **[project.nvim](https://github.com/ahmedkhalf/project.nvim)** — automatic project root detection and project switching
-- **[bigfile.nvim](https://github.com/LunarVim/bigfile.nvim)** — disables heavy features for large files to maintain performance
+- **Large file handler** — native `BufReadPre` autocmd disables LSP, treesitter, syntax, illuminate and swapfile for files larger than 2 MiB
 - **[neoscroll.nvim](https://github.com/karb94/neoscroll.nvim)** — smooth scrolling animations
 - **[vim-startify](https://github.com/mhinz/vim-startify)** — start screen with recent files and sessions

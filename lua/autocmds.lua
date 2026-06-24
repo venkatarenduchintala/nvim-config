@@ -61,3 +61,44 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.formatoptions:remove { "t", "c", "a", "r", "o" }
   end,
 })
+
+-- Large file handler: disable heavy features for files > 2 MiB
+vim.api.nvim_create_autocmd("BufReadPre", {
+  callback = function(args)
+    local buf = args.buf
+    local ok, stat = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(buf))
+    if not (ok and stat and stat.size > 2 * 1024 * 1024) then
+      return
+    end
+
+    vim.opt_local.swapfile = false
+    vim.opt_local.foldmethod = "manual"
+    vim.opt_local.undolevels = -1
+    vim.opt_local.undoreload = 0
+    vim.opt_local.list = false
+
+    if vim.fn.exists(":DoMatchParen") == 2 then
+      vim.cmd("NoMatchParen")
+    end
+
+    vim.api.nvim_create_autocmd("LspAttach", {
+      buffer = buf,
+      callback = function(lsp_args)
+        vim.schedule(function()
+          vim.lsp.buf_detach_client(buf, lsp_args.data.client_id)
+        end)
+      end,
+    })
+
+    pcall(vim.treesitter.stop, buf)
+    pcall(function() require("illuminate.engine").stop_buf(buf) end)
+    pcall(function() require("ibl").setup_buffer(buf, { enabled = false }) end)
+
+    vim.schedule(function()
+      if vim.api.nvim_buf_is_valid(buf) then
+        vim.bo[buf].syntax = "OFF"
+        vim.bo[buf].filetype = ""
+      end
+    end)
+  end,
+})
