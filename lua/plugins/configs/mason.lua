@@ -17,9 +17,9 @@ return {
 		"mason-org/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup({
-				-- Auto-enable all installed servers; jdtls has its own startup lifecycle
+				-- Auto-enable all installed servers; jdtls + rust_analyzer have their own lifecycle
 				automatic_enable = {
-					exclude = { "jdtls" },
+					exclude = { "jdtls", "rust_analyzer" },
 				},
 				-- skip heavy binary downloads in CI; lazy.nvim plugin code is still validated
 				ensure_installed = vim.env.CI and {} or {
