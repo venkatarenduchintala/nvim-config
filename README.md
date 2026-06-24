@@ -26,9 +26,14 @@ Personal Lua-based Neovim configuration used as a daily IDE for SRE/DevOps work 
     ```
     git clone --depth 1 https://github.com/venkatarenduchintala/nvim-config.git ~/.config/nvim
     ```
-1. Ensure all [prerequisites](#prerequisites) are installed.
-2. Launch Neovim — [lazy.nvim](https://github.com/folke/lazy.nvim) bootstraps itself on first start and installs all plugins.
-3. LSP servers, DAP adapters, linters and formatters are installed automatically by [mason.nvim](https://github.com/mason-org/mason.nvim) on first launch.
+1. Install Neovim (0.11+). On **Debian/Ubuntu** the included script builds from source (stable branch) and installs system-wide:
+    ```bash
+    bash ~/.config/nvim/install_nvim.sh
+    ```
+    This also installs the C compiler and build tools, satisfying that prerequisite. For other platforms see the [Neovim install guide](https://github.com/neovim/neovim/wiki/Installing-Neovim).
+2. Ensure all remaining [prerequisites](#prerequisites) are installed (`ripgrep`, `node.js`, `git`).
+3. Launch Neovim — [lazy.nvim](https://github.com/folke/lazy.nvim) bootstraps itself on first start and installs all plugins.
+4. LSP servers, DAP adapters, linters and formatters are installed automatically by [mason.nvim](https://github.com/mason-org/mason.nvim) on first launch.
 
 <br>
 
