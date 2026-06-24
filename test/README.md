@@ -32,4 +32,33 @@ The `test/` directory contains a headless CI suite that runs inside the devconta
 
 ## Running locally
 
-See [Running the CI pipeline locally](../README.md#running-the-ci-pipeline-locally) in the root README.
+The GitHub Actions workflow (`.github/workflows/validate.yml`) builds the devcontainer image and mounts the repo into it. You can reproduce this locally in two ways.
+
+### Option 1 — Direct Docker (recommended for this config)
+
+The most reliable local approach, since the workflow uses Docker-in-Docker internally:
+
+```bash
+# Build the devcontainer image
+docker build -f .devcontainer/Dockerfile -t nvim-config:ci .
+
+# Run the full validation suite
+docker run --rm \
+  -e CI=true \
+  -v "$(pwd):/home/dev/.config/nvim:ro" \
+  nvim-config:ci \
+  bash /home/dev/.config/nvim/test/ci_validate.sh
+```
+
+The `-e CI=true` flag skips heavy binary downloads (LSP servers, DAP adapters) so the run completes in under 5 minutes.
+
+### Option 2 — [act](https://github.com/nektos/act)
+
+[act](https://github.com/nektos/act) runs GitHub Actions workflows locally using Docker. Install it via your package manager, then:
+
+```bash
+# Run the validate job (mirrors what GitHub runs on push/PR)
+act push -j validate
+```
+
+> **Note:** Because the workflow itself uses `docker/build-push-action`, `act` requires Docker-in-Docker. If the build step fails, fall back to Option 1 above.
