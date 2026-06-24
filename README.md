@@ -1,8 +1,22 @@
 # Neovim configuration for SRE, Java, Python, Rust and Lua
 
+[![CI](https://github.com/venkatarenduchintala/nvim-config/actions/workflows/validate.yml/badge.svg)](https://github.com/venkatarenduchintala/nvim-config/actions/workflows/validate.yml)
+
 Personal Lua-based Neovim configuration used as a daily IDE for SRE/DevOps work and software development.
 
 > **Disclaimer:** This configuration is based on and forked from [magidc/nvim-config](https://github.com/magidc/nvim-config). Credits to the original author for the foundational setup.
+
+<br>
+
+# Prerequisites
+
+| Dependency | Version | Why |
+|------------|---------|-----|
+| [Neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim) | **0.11+** | Native LSP API (`vim.lsp.config`, `after/lsp/`) |
+| [ripgrep](https://github.com/BurntSushi/ripgrep) | any | Telescope live grep and file search |
+| C compiler (`gcc` or `clang`) | any | Compiling treesitter parsers from source |
+| [Node.js](https://nodejs.org/) | 18+ | Required by several LSP servers installed via mason: `bashls`, `eslint`, `jsonls`, `html`, `cssls` |
+| [git](https://git-scm.com/) | any | lazy.nvim bootstrap and plugin installation |
 
 <br>
 
@@ -12,9 +26,9 @@ Personal Lua-based Neovim configuration used as a daily IDE for SRE/DevOps work 
     ```
     git clone --depth 1 https://github.com/venkatarenduchintala/nvim-config.git ~/.config/nvim
     ```
-1. Install latest [Neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim) (0.11+).
-2. Install [ripgrep](https://github.com/BurntSushi/ripgrep) — required by some [Telescope](https://github.com/nvim-telescope/telescope.nvim) search modes.
-3. LSP servers, DAP adapters, linters and formatters are managed automatically by [mason.nvim](https://github.com/mason-org/mason.nvim) on first launch.
+1. Ensure all [prerequisites](#prerequisites) are installed.
+2. Launch Neovim — [lazy.nvim](https://github.com/folke/lazy.nvim) bootstraps itself on first start and installs all plugins.
+3. LSP servers, DAP adapters, linters and formatters are installed automatically by [mason.nvim](https://github.com/mason-org/mason.nvim) on first launch.
 
 <br>
 
@@ -27,6 +41,46 @@ Default: [Tokyonight](https://github.com/folke/tokyonight.nvim).
 # Custom Mappings
 Core mappings are defined in `lua/mappings.lua`. [WhichKey](https://github.com/folke/which-key.nvim) provides inline descriptions for all bindings.
 Plugin-specific mappings live in `lua/plugins/configs/`. LSP mappings are defined in `lua/lsp/` and are only active when a language server is attached.
+
+<br>
+
+# Directory Structure
+
+```
+.
+├── after/lsp/              # Per-server LSP settings (Neovim 0.11+ native API)
+│   ├── gopls.lua           #   Go
+│   ├── rust_analyzer.lua   #   Rust
+│   ├── yamlls.lua          #   YAML (SchemaStore + Kubernetes schemas)
+│   ├── helm_ls.lua         #   Helm
+│   ├── ansiblels.lua       #   Ansible
+│   ├── jsonnet_ls.lua      #   Jsonnet / Grafonnet
+│   ├── lua_ls.lua          #   Lua (Neovim API aware)
+│   └── eslint.lua          #   ESLint with auto-fix on save
+├── lua/
+│   ├── lsp/
+│   │   ├── init.lua        #   Global capabilities + LspAttach autocmd
+│   │   ├── handlers.lua    #   on_attach and capabilities shared across servers
+│   │   └── configs/        #   Language-specific lifecycle plugins
+│   │       ├── java.lua    #     jdtls (own startup lifecycle)
+│   │       ├── rust.lua    #     rustaceanvim + crates.nvim
+│   │       ├── go.lua      #     nvim-dap-go (DAP only)
+│   │       ├── python.lua  #     nvim-dap-python + jupyter client
+│   │       ├── yaml.lua    #     yaml-companion (Telescope schema picker)
+│   │       └── dap.lua     #     DAP UI and adapters
+│   ├── plugins/
+│   │   ├── init.lua        #   Plugin list (lazy.nvim entry point)
+│   │   └── configs/        #   Per-plugin configuration files
+│   ├── mappings.lua        #   Core key mappings
+│   ├── settings.lua        #   Neovim options and active theme selection
+│   └── theme.lua           #   Theme switcher logic
+├── test/                   #   CI validation suite (see test/README.md)
+│   ├── ci_validate.sh      #     Orchestrates all validation steps
+│   ├── fixtures/           #     Source files used as treesitter parse targets
+│   └── *.lua               #     Headless validation scripts
+└── .github/workflows/
+    └── validate.yml        #   GitHub Actions: build devcontainer + run test suite
+```
 
 <br>
 
