@@ -78,7 +78,6 @@ local plugins = {
 	---- Code
 	require("plugins.configs.lspsaga"),
 	require("plugins.configs.refactor"),
-	require("plugins.configs.lens"),
 	require("plugins.configs.conform"), -- Formatting tool
   require("plugins.configs.glance"),
 
