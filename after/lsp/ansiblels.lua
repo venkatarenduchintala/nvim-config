@@ -1,4 +1,4 @@
-vim.lsp.config('ansiblels', {
+return {
   settings = {
     ansible = {
       ansible = {
@@ -19,4 +19,4 @@ vim.lsp.config('ansiblels', {
       },
     },
   },
-})
+}

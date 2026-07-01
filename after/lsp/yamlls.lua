@@ -1,4 +1,4 @@
-vim.lsp.config('yamlls', {
+return {
   settings = {
     yaml = {
       validate = true,
@@ -20,4 +20,4 @@ vim.lsp.config('yamlls', {
       },
     },
   },
-})
+}

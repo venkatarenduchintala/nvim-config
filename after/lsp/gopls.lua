@@ -1,4 +1,5 @@
-vim.lsp.config('gopls', {
+-- Merged into the gopls config resolved by vim.lsp (Neovim 0.11+ native API).
+return {
   settings = {
     gopls = {
       analyses = {
@@ -9,4 +10,4 @@ vim.lsp.config('gopls', {
       gofumpt = true,
     },
   },
-})
+}

@@ -1,4 +1,4 @@
-vim.lsp.config('jsonnet_ls', {
+return {
   cmd = { "jsonnet-language-server", "-t" },
   settings = {
     ext_vars = {},
@@ -11,4 +11,4 @@ vim.lsp.config('jsonnet_ls', {
       SortImports = true,
     },
   },
-})
+}
