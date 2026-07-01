@@ -1,4 +1,4 @@
-vim.lsp.config('rust_analyzer', {
+return {
   settings = {
     ["rust-analyzer"] = {
       diagnostics = { enable = true },
@@ -10,4 +10,4 @@ vim.lsp.config('rust_analyzer', {
       procMacro = { enable = true },
     },
   },
-})
+}

@@ -1,4 +1,4 @@
-vim.lsp.config('helm_ls', {
+return {
   settings = {
     ['helm-ls'] = {
       logLevel = "info",
@@ -22,4 +22,4 @@ vim.lsp.config('helm_ls', {
       },
     },
   },
-})
+}
