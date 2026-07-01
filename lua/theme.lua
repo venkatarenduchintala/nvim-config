@@ -1,5 +1,17 @@
+-- Plug-n-play theme system.
+--
+-- Each colorscheme lives in its own file under lua/themes/<name>.lua and returns
+-- a lazy.nvim plugin spec. To add a theme: drop a new file in lua/themes/ — no
+-- edits here required. To switch: `:Theme <name>` (persists across restarts) or
+-- set the default in lua/settings.lua via set_active_theme(...).
+--
+-- Only the *active* theme plugin is installed (get_active_theme marks it
+-- lazy=false / priority=1000); the others are never fetched, keeping startup lean.
+
 local M = {}
 
+-- Fixed accent palette consumed by some plugin configs (bufferline, scrollbar).
+-- Independent of the active colorscheme.
 M.colors = {
 	bg = "#2e3440",
 	fg = "#ECEFF4",
@@ -33,177 +45,121 @@ M.colors = {
 	grey19 = "#020203",
 }
 
-local function loadNoClownFiesta()
-	vim.cmd([[colorscheme no-clown-fiesta]])
-	require("no-clown-fiesta").setup({
-		transparent = false, -- Enable this to disable the bg color
-		styles = {
-			-- You can set any of the style values specified for `:h nvim_set_hl`
-			comments = {},
-			keywords = {},
-			functions = {},
-			variables = {},
-			type = { bold = true },
-		},
-	})
+-- Machine-local persisted choice (not tracked in the repo).
+local state_file = vim.fn.stdpath("data") .. "/active-theme.txt"
+
+-- Discover available theme names from lua/themes/*.lua on the runtimepath.
+function M.list()
+	local seen, names = {}, {}
+	for _, path in ipairs(vim.api.nvim_get_runtime_file("lua/themes/*.lua", true)) do
+		local name = vim.fn.fnamemodify(path, ":t:r")
+		if not seen[name] then
+			seen[name] = true
+			names[#names + 1] = name
+		end
+	end
+	table.sort(names)
+	return names
 end
 
-local themes = {
-    onenord = {
-        "rmehri01/onenord.nvim",
-        config = function()
-            require('onenord').setup {
-                borders = true,
-                fade_nc = false,
-                styles = {
-                    comments = "italic",
-                    strings = "NONE",
-                    keywords = "NONE",
-                    functions = "italic",
-                    variables = "bold",
-                    diagnostics = "underline"
-                },
-                disable = {
-                    background = false,
-                    cursorline = false,
-                    eob_lines = true
-                },
-                colors = {},
-            }
-        end
-    },
-    tokyonight = {
-        "folke/tokyonight.nvim",
-        config = function()
-            local theme = require('tokyonight')
-            theme.setup({
-                style = 'night',
-                on_colors = function(colors)
-                    colors.bg_dark = '#000000'
-                    colors.bg = '#11121D'
-                    -- colors.bg_visual = M.colors.grey12
-                end
-            })
-            theme.load()
-        end
-    },
-    onedark = {
-        "navarasu/onedark.nvim",
-        config = function()
-            local theme = require('onedark')
-            theme.setup {
-                style = 'deep',
-                transparent = false, -- Show/hide background
-                code_style = {
-                    comments = 'italic',
-                    keywords = 'none',
-                    functions = 'none',
-                    strings = 'none',
-                    variables = 'none'
-                },
-                lualine = {
-                    transparent = true, -- lualine center bar transparency
-                },
-            }
-            theme.load()
-            -- loadNoClownFiesta()
-        end
-    },
-    palenightfall = {
-        "JoosepAlviste/palenightfall.nvim",
-        config = function()
-            require('palenightfall').setup {}
-        end
-    },
-    nordic = {
-        "AlexvZyl/nordic.nvim",
-        config = function()
-            require('nordic').setup {}
-        end
-    },
-    onedarkpro = {
-        "olimorris/onedarkpro.nvim",
-        config = function()
-            vim.o.background = "dark"
-            require('onedarkpro').load()
-        end
-    },
-    tokyodark = {
-        "tiagovla/tokyodark.nvim",
-        config = function()
-            vim.g.tokyodark_transparent_background = false
-            vim.g.tokyodark_enable_italic_comment = true
-            vim.g.tokyodark_enable_italic = true
-            vim.g.tokyodark_color_gamma = "0.0"
-            vim.cmd 'colorscheme tokyodark'
-        end
-    },
-    moonfly = {
-        "bluz71/vim-moonfly-colors",
-        config = function()
-            vim.cmd [[colorscheme moonfly]]
-        end
-    },
-    dracula = {
-        "Mofiqul/dracula.nvim",
-        config = function()
-            local theme = require('dracula')
-            theme.setup {}
-            theme.load()
-        end
-    },
-    draculanight = {
-        "magidc/draculanight",
-        config = function()
-            local theme = require('draculanight')
-            theme.setup {}
-            theme.load()
-        end
-    },
-    catppuccin = {
-        "catppuccin/nvim",
-        name = "catppuccin",
-        config = function()
-            vim.g.catppuccin_flavour = "mocha" -- latte, frappe, macchiato, mocha
-            vim.cmd [[colorscheme catppuccin]]
-        end
-    },
-    material = {
-        "marko-cerovac/material.nvim",
-        config = function()
-            require "plugins.configs.materialui"
-        end
-    },
-    gruvbox = {
-      'sainnhe/gruvbox-material',
-      lazy = false,
-      config = function()
-        -- Optionally configure and load the colorscheme
-        -- directly inside the plugin declaration.
-        vim.g.gruvbox_material_enable_italic = true
-        vim.cmd.colorscheme('gruvbox-material')
-        vim.g.show_eob = 1
-        vim.g.background = 'dark'
-        vim.g.gruvbox_material_background = 'hard'
-        vim.g.gruvbox_material_foreground = 'material'
-        vim.g.gruvbox_material_cursor = 'auto'
-        vim.g.gruvbox_material_show_eob = 0
-        vim.g.gruvbox_material_ui_contrast = 'high'
-        vim.g.gruvbox_material_float_style = 'bright' 
-        vim.g.gruvbox_material_transparent_background = 2
-      end        
-    },
-}
-
-M.set_active_theme = function(theme_name)
-	M.theme_name = theme_name
+local function is_valid(name)
+	for _, n in ipairs(M.list()) do
+		if n == name then
+			return true
+		end
+	end
+	return false
 end
 
-M.get_active_theme = function()
-	local theme = themes[M.theme_name]
-	theme.lazy = false
-	theme.priority = 1000
-	return theme
+local function read_persisted()
+	local f = io.open(state_file, "r")
+	if not f then
+		return nil
+	end
+	local name = vim.trim(f:read("*a") or "")
+	f:close()
+	return name ~= "" and name or nil
 end
+
+local function write_persisted(name)
+	local f = io.open(state_file, "w")
+	if not f then
+		return false
+	end
+	f:write(name)
+	f:close()
+	return true
+end
+
+-- Default theme, set from lua/settings.lua. A persisted `:Theme` choice wins.
+function M.set_active_theme(name)
+	M.default_theme = name
+	if not M.theme_name then
+		M.theme_name = name
+	end
+end
+
+local function resolve_name()
+	local persisted = read_persisted()
+	if persisted and is_valid(persisted) then
+		return persisted
+	end
+	if M.default_theme and is_valid(M.default_theme) then
+		return M.default_theme
+	end
+	return M.default_theme or M.list()[1]
+end
+
+-- Returns the lazy.nvim spec for the active theme (the only one that gets installed).
+function M.get_active_theme()
+	local name = resolve_name()
+	M.theme_name = name
+	local ok, spec = pcall(require, "themes." .. name)
+	if not ok or type(spec) ~= "table" then
+		vim.notify("theme: failed to load 'themes." .. tostring(name) .. "': " .. tostring(spec), vim.log.levels.ERROR)
+		return {}
+	end
+	spec.lazy = false
+	spec.priority = 1000
+	return spec
+end
+
+-- :Theme            -> show current + available
+-- :Theme <name>     -> persist choice (restart to apply; only active is installed)
+vim.api.nvim_create_user_command("Theme", function(opts)
+	local name = vim.trim(opts.args)
+	local themes = M.list()
+	if name == "" then
+		vim.notify(
+			"Active theme: " .. (M.theme_name or "?") .. "\nAvailable: " .. table.concat(themes, ", "),
+			vim.log.levels.INFO
+		)
+		return
+	end
+	if not is_valid(name) then
+		vim.notify("Unknown theme '" .. name .. "'. Available: " .. table.concat(themes, ", "), vim.log.levels.ERROR)
+		return
+	end
+	if write_persisted(name) then
+		vim.notify(
+			"Theme set to '" .. name .. "'. Restart Neovim to apply (it installs on next launch).",
+			vim.log.levels.INFO
+		)
+	else
+		vim.notify("Could not write theme choice to " .. state_file, vim.log.levels.ERROR)
+	end
+end, {
+	nargs = "?",
+	desc = "Show or switch the active colorscheme (restart-based)",
+	complete = function(arglead)
+		local out = {}
+		for _, n in ipairs(M.list()) do
+			if n:find(arglead, 1, true) == 1 then
+				out[#out + 1] = n
+			end
+		end
+		return out
+	end,
+})
 
 return M
