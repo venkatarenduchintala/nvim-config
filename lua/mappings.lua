@@ -151,6 +151,11 @@ wk.add({
 	{ "<leader>vp", "<cmd>Trouble diagnostics<cr>", desc = "[TROUBLE] Toggle problem and diagnostics view" },
 	{ "<leader>vs", "<cmd>AerialToggle<cr>", desc = "[AERIAL] Toggle file structure view" },
 	{ "<leader>vt", "<cmd>ToggleTerm<cr>", desc = "[TOGGLETERM] Open new terminal" },
+	{
+		"<leader>vT",
+		"<cmd>lua require('toggleterm').toggle(99, math.floor(vim.o.lines * 0.4), nil, 'horizontal')<cr>",
+		desc = "[TOGGLETERM] Toggle bottom terminal (VSCode-style, 40%)",
+	},
 	{ "<leader>vu", "<cmd>UndotreeToggle<cr>", desc = "[UNDOTREE]Toggle last undoable changes view" },
 	{ "<leader>vb", "<cmd>lua require('harpoon.ui').toggle_quick_menu()<cr>", desc = "[HARPOON] Show quick menu" },
 
