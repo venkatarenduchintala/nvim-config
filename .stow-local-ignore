@@ -1,0 +1,11 @@
+\.git
+\.gitignore
+\.gitattributes
+^/README.*
+^/LICENSE.*
+screenshots
+test
+\.devcontainer
+\.github
+install_nvim\.sh
+\.editorconfig
