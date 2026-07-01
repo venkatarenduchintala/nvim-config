@@ -2,7 +2,9 @@ name: Validate Neovim Config
 
 on:
   push:
-    branches: ["**"]
+    # Documentation branches only ever carry docs changes — never build them.
+    branches-ignore:
+      - "docs/**"
   pull_request:
     branches: [main]
 
@@ -10,13 +12,18 @@ jobs:
   validate:
     name: Build & validate Neovim
     runs-on: ubuntu-latest
-    # Skip docs: and chore: commits on push; always run on pull requests
-    if: |
-      github.event_name == 'pull_request' ||
-      (
-        !startsWith(github.event.head_commit.message, 'docs:') &&
-        !startsWith(github.event.head_commit.message, 'chore:')
-      )
+    # Do not run for documentation-only work:
+    #   - PRs opened from a docs/* branch (github.head_ref)
+    #   - pushes whose tip commit is a docs:/chore: (or scoped) commit
+    # On pull_request events head_commit is null, so only the head_ref check
+    # applies there; on push events head_ref is empty, so only the message
+    # checks apply. Pushes to docs/** never reach here (filtered by on.push).
+    if: >-
+      !startsWith(github.head_ref, 'docs/') &&
+      !startsWith(github.event.head_commit.message, 'docs:') &&
+      !startsWith(github.event.head_commit.message, 'docs(') &&
+      !startsWith(github.event.head_commit.message, 'chore:') &&
+      !startsWith(github.event.head_commit.message, 'chore(')
 
     steps:
       - name: Checkout
