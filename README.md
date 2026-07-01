@@ -37,9 +37,61 @@ Personal Lua-based Neovim configuration used as a daily IDE for SRE/DevOps work 
 
 <br>
 
-# UI Theme
-Several UI themes are preconfigured. The active theme is set in `lua/settings.lua`.
-Default: [Tokyonight](https://github.com/folke/tokyonight.nvim).
+# Themes
+
+Themes use a small plug-n-play system: each colorscheme lives in its own file
+under `lua/themes/<name>.lua` that returns a [lazy.nvim](https://github.com/folke/lazy.nvim)
+plugin spec. `lua/theme.lua` auto-discovers every file in that directory, so
+adding a theme is drop-in — there is no central list to edit. Only the **active**
+theme's plugin is installed; the others are never fetched, keeping startup lean.
+
+**Default:** `gruvbox` (Gruvbox Material), set in `lua/settings.lua` via
+`require("theme").set_active_theme("gruvbox")`.
+
+## Switching
+
+Use the `:Theme` command (tab-completes across the discovered themes):
+
+```vim
+:Theme                 " show the active theme and list all available
+:Theme everforest      " select a theme
+```
+
+The choice is persisted to a machine-local state file
+(`stdpath("data")/active-theme.txt`) and applied on the next launch, where the
+active theme installs itself via lazy.nvim. To change the default for a fresh
+install, edit the `set_active_theme(...)` call in `lua/settings.lua`.
+
+## Adding a theme
+
+Create `lua/themes/<name>.lua` returning a lazy.nvim spec that loads the
+colorscheme in its `config` function:
+
+```lua
+return {
+  "author/mytheme.nvim",
+  config = function()
+    vim.o.background = "dark"
+    vim.cmd.colorscheme("mytheme")
+  end,
+}
+```
+
+It is discovered automatically and becomes selectable via `:Theme mytheme`.
+
+## Included themes
+
+Alongside the previously bundled colorschemes, several low-eyestrain dark themes
+(medium contrast, warm, desaturated) are included for long editing sessions:
+
+- `gruvbox_material_soft` — Gruvbox Material, medium background, low UI contrast
+- `everforest` — warm green-grey, muted
+- `kanagawa` — muted "ink painting" palette
+- `tokyonight_moon` — softer Tokyonight variant
+- `zenbones` — contrast-engineered, warm (requires [`lush.nvim`](https://github.com/rktjmp/lush.nvim))
+
+The status line ([lualine](https://github.com/nvim-lualine/lualine.nvim)) uses
+`theme = "auto"`, so it follows whichever colorscheme is active.
 
 <br>
 
@@ -76,9 +128,10 @@ Plugin-specific mappings live in `lua/plugins/configs/`. LSP mappings are define
 │   ├── plugins/
 │   │   ├── init.lua        #   Plugin list (lazy.nvim entry point)
 │   │   └── configs/        #   Per-plugin configuration files
+│   ├── themes/             #   One file per colorscheme (see Themes section)
 │   ├── mappings.lua        #   Core key mappings
-│   ├── settings.lua        #   Neovim options and active theme selection
-│   └── theme.lua           #   Theme switcher logic
+│   ├── settings.lua        #   Neovim options and default theme selection
+│   └── theme.lua           #   Theme auto-discovery loader + :Theme command
 ├── test/                   #   CI validation suite (see test/README.md)
 │   ├── ci_validate.sh      #     Orchestrates all validation steps
 │   ├── fixtures/           #     Source files used as treesitter parse targets
