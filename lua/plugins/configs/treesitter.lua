@@ -3,13 +3,13 @@ return {
 	branch = "master",
 	build = ":TSUpdate",
 	dependencies = {
-		"nvim-treesitter/nvim-treesitter-textobjects",
+		{ "nvim-treesitter/nvim-treesitter-textobjects", branch = "master" },
 		"windwp/nvim-ts-autotag",
 		"nvim-treesitter/nvim-treesitter-refactor",
 		"andymass/vim-matchup",
 	},
 	config = function()
-		local ts_repeat_move = require("nvim-treesitter-textobjects.repeatable_move")
+		local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
 
 		-- vim way: ; goes to the direction you were moving.
 		vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move)
