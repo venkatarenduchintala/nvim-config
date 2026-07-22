@@ -2,7 +2,9 @@
 -- Uses TSInstall! + vim.wait() polling parser .so files on disk.
 -- Exit code 1 on timeout so the CI step fails visibly.
 local langs = { 'go', 'terraform', 'hcl', 'yaml', 'bash', 'gotmpl', 'dockerfile', 'jsonnet', 'python', 'markdown', 'markdown_inline' }
-local parser_dir = vim.fn.stdpath('data') .. '/lazy/nvim-treesitter/parser/'
+-- On the nvim-treesitter `main` branch parsers install to the default
+-- install_dir (stdpath('data')/site), not the old lazy plugin dir.
+local parser_dir = vim.fn.stdpath('data') .. '/site/parser/'
 
 local function installed(lang)
   return vim.fn.filereadable(parser_dir .. lang .. '.so') == 1

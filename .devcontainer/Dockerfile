@@ -52,6 +52,9 @@ RUN apt-get update \
     && git clone --depth 1 --branch stable https://github.com/neovim/neovim /tmp/neovim \
     && make -C /tmp/neovim CMAKE_BUILD_TYPE=Release \
     && make -C /tmp/neovim install \
+    && curl -fsSL https://github.com/tree-sitter/tree-sitter/releases/download/v0.26.11/tree-sitter-linux-x64.gz \
+        | gunzip > /usr/local/bin/tree-sitter \
+    && chmod +x /usr/local/bin/tree-sitter \
     && python3 -m pip install --no-cache-dir --break-system-packages pynvim \
     && ln -sf /usr/bin/fdfind /usr/local/bin/fd \
     && ln -sf /usr/bin/python3 /usr/local/bin/python \
