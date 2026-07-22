@@ -25,5 +25,14 @@ return {
 			-- If nil, vim-illuminate will be disabled for large files.
 			large_file_overrides = nil,
 		})
+
+		-- Replaces the dropped nvim-treesitter-refactor goto_next/previous_usage
+		-- (]] / [[) with illuminate's reference navigation.
+		vim.keymap.set("n", "]]", function()
+			require("illuminate").goto_next_reference(false)
+		end, { desc = "Next reference/usage" })
+		vim.keymap.set("n", "[[", function()
+			require("illuminate").goto_prev_reference(false)
+		end, { desc = "Previous reference/usage" })
 	end,
 }
