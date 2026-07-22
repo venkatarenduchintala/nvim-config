@@ -1,142 +1,154 @@
+-- Parsers to install/keep updated. On the `main` branch these are compiled
+-- locally via tree-sitter-cli + a C compiler (unlike the old `master` branch,
+-- which downloaded prebuilt parsers).
+local ensure_installed = {
+	"java",
+	"cpp",
+	"rust",
+	"python",
+	"lua",
+	"html",
+	"json",
+	"dockerfile",
+	"yaml",
+	"css",
+	"javascript",
+	"typescript",
+	"vue",
+	"toml",
+	-- SRE
+	"go",
+	"terraform",
+	"hcl",
+	"bash",
+	"gotmpl",
+	"jsonnet",
+	-- Markdown
+	"markdown",
+	"markdown_inline",
+}
+
+-- Treesitter indentation is experimental on `main`; keep it off for the
+-- languages whose indent module misbehaved on the old branch.
+local indent_disabled = { python = true, css = true, rust = true }
+
+-- Text-object select maps: lhs -> { query, desc }
+local select_maps = {
+	aa = { "@parameter.outer", "Select outer part of an argument/parameter" },
+	ia = { "@parameter.inner", "Select inner part of an argument/parameter" },
+	ab = { "@block.outer", "Select outer part of a block" },
+	ib = { "@block.inner", "Select inner part of a block" },
+	am = { "@function.outer", "Select outer part of a method" },
+	im = { "@function.inner", "Select inner part of a method" },
+	ac = { "@class.outer", "Select outer part of a class" },
+	ic = { "@class.inner", "Select inner part of a class" },
+	ay = { "@conditional.outer", "Select outer part of a conditional" },
+	iy = { "@conditional.inner", "Select inner part of a conditional" },
+	al = { "@loop.outer", "Select outer part of a loop" },
+	il = { "@loop.inner", "Select inner part of a loop" },
+}
+
+-- Move maps: { fn, lhs, query, desc } — fn is a nvim-treesitter-textobjects.move method.
+local move_maps = {
+	-- next start
+	{ "goto_next_start", "]m", "@function.outer", "Next method start" },
+	{ "goto_next_start", "]c", "@class.outer", "Next class start" },
+	{ "goto_next_start", "]a", "@parameter.outer", "Next argument/parameter start" },
+	{ "goto_next_start", "]b", "@block.outer", "Next block start" },
+	{ "goto_next_start", "]y", "@conditional.outer", "Next conditional start" },
+	{ "goto_next_start", "]l", "@loop.outer", "Next loop start" },
+	-- next end
+	{ "goto_next_end", "]M", "@function.outer", "Next method end" },
+	{ "goto_next_end", "]C", "@class.outer", "Next class end" },
+	{ "goto_next_end", "]A", "@parameter.inner", "Next argument/parameter end" },
+	{ "goto_next_end", "]B", "@block.outer", "Next block end" },
+	{ "goto_next_end", "]Y", "@conditional.outer", "Next conditional end" },
+	{ "goto_next_end", "]L", "@loop.outer", "Next loop end" },
+	-- previous start
+	{ "goto_previous_start", "[m", "@function.outer", "Previous method start" },
+	{ "goto_previous_start", "[c", "@class.outer", "Previous class start" },
+	{ "goto_previous_start", "[a", "@parameter.outer", "Previous argument/parameter start" },
+	{ "goto_previous_start", "[b", "@block.outer", "Previous block start" },
+	{ "goto_previous_start", "[y", "@conditional.outer", "Previous conditional start" },
+	{ "goto_previous_start", "[l", "@loop.outer", "Previous loop start" },
+	-- previous end
+	{ "goto_previous_end", "[M", "@function.outer", "Previous method end" },
+	{ "goto_previous_end", "[C", "@class.outer", "Previous class end" },
+	{ "goto_previous_end", "[A", "@parameter.inner", "Previous argument/parameter end" },
+	{ "goto_previous_end", "[B", "@block.outer", "Previous block end" },
+	{ "goto_previous_end", "[Y", "@conditional.outer", "Previous conditional end" },
+	{ "goto_previous_end", "[L", "@loop.outer", "Previous loop end" },
+}
+
 return {
-	"nvim-treesitter/nvim-treesitter",
-	branch = "master",
-	build = ":TSUpdate",
-	dependencies = {
-		{ "nvim-treesitter/nvim-treesitter-textobjects", branch = "master" },
-		"windwp/nvim-ts-autotag",
-		"nvim-treesitter/nvim-treesitter-refactor",
-		"andymass/vim-matchup",
+	{
+		"nvim-treesitter/nvim-treesitter",
+		branch = "main",
+		lazy = false, -- required: global default is lazy = true
+		build = ":TSUpdate",
+		config = function()
+			require("nvim-treesitter").install(ensure_installed)
+
+			-- Highlighting on `main` is Neovim-native: start it per buffer.
+			-- markdown is intentionally excluded — autocmds.lua stops treesitter
+			-- for markdown (nvim 0.12 predicate-handler crash).
+			local group = vim.api.nvim_create_augroup("ts_main_highlight", { clear = true })
+			vim.api.nvim_create_autocmd("FileType", {
+				group = group,
+				callback = function(args)
+					local ft = vim.bo[args.buf].filetype
+					if ft == "markdown" then
+						return
+					end
+					if not pcall(vim.treesitter.start, args.buf) then
+						return
+					end
+					if not indent_disabled[ft] then
+						vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+					end
+				end,
+			})
+		end,
 	},
-	config = function()
-		local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
+	{
+		"nvim-treesitter/nvim-treesitter-textobjects",
+		branch = "main",
+		lazy = false,
+		dependencies = { "nvim-treesitter/nvim-treesitter" },
+		config = function()
+			require("nvim-treesitter-textobjects").setup({
+				select = { lookahead = true },
+				move = { set_jumps = true },
+			})
 
-		-- vim way: ; goes to the direction you were moving.
-		vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move)
-		vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_opposite)
+			local select = require("nvim-treesitter-textobjects.select")
+			for lhs, spec in pairs(select_maps) do
+				vim.keymap.set({ "x", "o" }, lhs, function()
+					select.select_textobject(spec[1], "textobjects")
+				end, { desc = spec[2] })
+			end
 
-		require("nvim-treesitter.configs").setup({
-			autotag = { enable = true },
-			indent = {
-				enable = true,
-				disable = { "python", "css", "rust" },
-			},
-			--ensure_installed = "all",
-			ensure_installed = {
-				"java",
-				"cpp",
-				"rust",
-				"python",
-				"lua",
-				"html",
-				"json",
-				"dockerfile",
-				"yaml",
-				"css",
-				"javascript",
-				"typescript",
-				"vue",
-				"toml",
-				-- SRE
-				"go",
-				"terraform",
-				"hcl",
-				"bash",
-				"gotmpl",
-				"jsonnet",
-				-- Markdown
-				"markdown",
-				"markdown_inline",
-			},
-			refactor = {
-				highlight_definitions = {
-					-- Broken with current nvim-treesitter locals handling; keep refactor navigation enabled.
-					enable = false,
-					clear_on_cursor_move = true,
-				},
-				highlight_current_scope = { enable = false },
-				navigation = {
-					enable = true,
-					-- Assign keymaps to false to disable them, e.g. `goto_definition = false`.
-					keymaps = {
-						goto_definition = false,
-						list_definitions = false,
-						list_definitions_toc = false,
-						goto_next_usage = "]]",
-						goto_previous_usage = "[[",
-					},
-				},
-			},
-			textobjects = {
-				select = {
-					enable = true,
-					lookahead = true,
-					keymaps = {
-						["aa"] = { query = "@parameter.outer", desc = "Select outer part of a argument/parameter" },
-						["ia"] = { query = "@parameter.inner", desc = "Select inner part of a argument/parameter" },
-						["ab"] = { query = "@block.outer", desc = "Select outer part of a block" },
-						["ib"] = { query = "@block.inner", desc = "Select inner part of a block" },
-						["am"] = { query = "@function.outer", desc = "Select outer part of a method" },
-						["im"] = { query = "@function.inner", desc = "Select inner part of a method" },
-						["ac"] = { query = "@class.outer", desc = "Select outer part of a class" },
-						["ic"] = { query = "@class.inner", desc = "Select inner part of a class" },
-						["ay"] = { query = "@conditional.outer", desc = "Select outer part of a conditional" },
-						["iy"] = { query = "@conditional.inner", desc = "Select inner part of a conditional" },
-						["al"] = { query = "@loop.outer", desc = "Select outer part of a loop" },
-						["il"] = { query = "@loop.inner", desc = "Select inner part of a loop" },
-					},
-				},
-				move = {
-					enable = true,
-					set_jumps = true, -- whether to set jumps in the jumplist
-					goto_next_start = {
-						["]m"] = { query = "@function.outer", desc = "Next method start" },
-						["]c"] = { query = "@class.outer", desc = "Next class start" },
-						["]a"] = { query = "@parameter.outer", desc = "Net argument/parameter start" },
-						["]b"] = { query = "@block.outer", desc = "Next block start" },
-						["]y"] = { query = "@conditional.outer", desc = "Next conditional start" },
-						["]l"] = { query = "@loop.outer", desc = "Next loop start" },
-					},
-					goto_next_end = {
-						["]M"] = { query = "@function.outer", desc = "Next method end" },
-						["]C"] = { query = "@class.outer", desc = "Next class end" },
-						["]A"] = { query = "@parameter.inner", desc = "Next argument/parameter end" },
-						["]B"] = { query = "@block.outer", desc = "Next block end" },
-						["]Y"] = { query = "@conditional.outer", desc = "Next conditional end" },
-						["]L"] = { query = "@loop.outer", desc = "Next loop end" },
-					},
-					goto_previous_start = {
-						["[m"] = { query = "@function.outer", desc = "Previous method start" },
-						["[c"] = { query = "@class.outer", desc = "Previous class start" },
-						["[a"] = { query = "@parameter.outer", desc = "Previous argument/parameter start" },
-						["[b"] = { query = "@block.outer", desc = "Previous block start" },
-						["[y"] = { query = "@conditional.outer", desc = "Previous conditional start" },
-						["[l"] = { query = "@loop.outer", desc = "Previous loop start" },
-					},
-					goto_previous_end = {
-						["[M"] = { query = "@function.outer", desc = "Previous method end" },
-						["[C"] = { query = "@class.outer", desc = "Previous class end" },
-						["[A"] = { query = "@parameter.inner", desc = "Previous argument/parameter end" },
-						["[B"] = { query = "@block.outer", desc = "Previous block end" },
-						["[Y"] = { query = "@conditional.outer", desc = "Previous conditional end" },
-						["[L"] = { query = "@loop.outer", desc = "Previous loop end" },
-					},
-				},
-			},
-			matchup = {
-				-- enables vim-matchup integration
-				enable = true,
-				enable_quotes = true,
-			},
-			-- incremental_selection = {
-			--     enable = true,
-			--     keymaps = {
-			--         init_selection = "grn", -- set to `false` to disable one of the mappings
-			--         node_incremental = "grn",
-			--         scope_incremental = "grp",
-			--         node_decremental = "_",
-			--     },
-			-- },
-		})
-	end,
+			local move = require("nvim-treesitter-textobjects.move")
+			for _, m in ipairs(move_maps) do
+				local fn, lhs, query, desc = m[1], m[2], m[3], m[4]
+				vim.keymap.set({ "n", "x", "o" }, lhs, function()
+					move[fn](query, "textobjects")
+				end, { desc = desc })
+			end
+
+			-- vim way: ; repeats the last move in its direction, , the opposite.
+			local ts_repeat_move = require("nvim-treesitter-textobjects.repeatable_move")
+			vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move)
+			vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_opposite)
+		end,
+	},
+	{
+		-- The `autotag` module no longer exists on treesitter `main`; the plugin
+		-- is configured standalone.
+		"windwp/nvim-ts-autotag",
+		lazy = false,
+		config = function()
+			require("nvim-ts-autotag").setup()
+		end,
+	},
 }
