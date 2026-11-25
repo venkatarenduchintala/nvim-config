@@ -3,8 +3,10 @@ return {
     "petertriho/nvim-scrollbar",
     config = function()
         require("scrollbar").setup({
-            handle = {
-                color = require("theme").colors.red,
+            scrollbar = {
+                thumb = {
+                    highlight = { bg = require("theme").colors.red },
+                },
             },
         })
     end,
